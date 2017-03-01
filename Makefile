@@ -6,7 +6,7 @@
 #    By: sduprey <sduprey@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/12/17 05:35:05 by sduprey           #+#    #+#              #
-#    Updated: 2017/03/01 19:53:18 by tiboitel         ###   ########.fr        #
+#    Updated: 2017/03/01 20:14:22 by tiboitel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME = nibbler
 
 SRC = main.cpp \
 	  Snake.cpp \
-	  AEntity.cpp
+	  AEntity.cpp \
+	  Game.cpp
 
 SRCDIR = src/
 
