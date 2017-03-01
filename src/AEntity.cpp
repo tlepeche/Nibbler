@@ -1,29 +1,31 @@
 #include <AEntity.hpp>
 
-AEntity::AEntity(): _type(Snake) {}
-
-AEntity::~AEntity() {}
-
-AEntity::AEntity(int x, int y, eType type): _type(type)
+AEntity::AEntity(int x, int y, E_ENTITIES_TYPE type)
 {
-	_pos.first = x;
-	_pos.second = y;
+	this->setPos(std::pair<int, int>(x, y));
+	this->setType(type);
 }
 
-AEntity::AEntity(AEntity const & src): _type(src.getType())
+AEntity::~AEntity()
 {
-	*this = src;
 }
 
-AEntity &AEntity::operator=(AEntity const & src)
+AEntity &AEntity::operator=(AEntity const &rhs)
 {
-	_pos = src.getPos();
-	return *this;
+	this->_pos = rhs.getPos();
+	this->_type = rhs.getType();
+	this->_id = rhs.getID();
+	return (*this);
 }
 
 std::pair<int, int>	AEntity::getPos() const { return _pos; }
+E_ENTITIES_TYPE		AEntity::getType() const { return _type; }
+int					AEntity::getID() const { return _id; }
 
-eType				AEntity::getType() const { return _type; }
+void	AEntity::setType(E_ENTITIES_TYPE type)
+{
+	this->_type = type;
+}
 
 void	AEntity::setPos(std::pair<int, int> pos)
 {

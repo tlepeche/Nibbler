@@ -1,16 +1,17 @@
 #include <Snake.hpp>
 
-Snake::Snake(int x, int y): AEntity(x, y, Snake)
+Snake::Snake(int x, int y) : AEntity(x, y, E_ENTITIES_TYPE::SNAKE)
 {
-	Snake::id += 1;
+}
+
+Snake::~Snake()
+{
 }
 
 bool	Snake::hasHit(AEntity const & src)
 {
-	if (_pos.first <= X_MIN || _pos.first >= X_MAX ||
-			_pos.second <= Y_MIN || _pos.second >= Y_MAX)
+	if (getPos().first <= X_MIN || getPos().first >= X_MAX ||
+			getPos().second <= Y_MIN || getPos().second >= Y_MAX)
 		return true;
-	return (_pos == src.getPos());
+	return (getPos() == src.getPos());
 }
-
-int	Snake::id = 0;

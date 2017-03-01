@@ -6,15 +6,15 @@
 #    By: sduprey <sduprey@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/12/17 05:35:05 by sduprey           #+#    #+#              #
-#    Updated: 2017/03/01 19:19:45 by tlepeche         ###   ########.fr        #
+#    Updated: 2017/03/01 19:53:18 by tiboitel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = avm
+NAME = nibbler
 
 SRC = main.cpp \
 	  Snake.cpp \
-	  AEntity.cpp \
+	  AEntity.cpp
 
 SRCDIR = src/
 
@@ -28,17 +28,19 @@ RM = rm -rf
 
 INC = -I includes
 
+CFLAGS = -Wall -Werror -Wextra -std=c++11
+
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	@$(CC) -o $(NAME) $(OBJ)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
 	@echo ""
 	@echo $(PX_STR) : $(EX_COLOR)$(NAME)$(NO_COLOR)
 	@echo ""
 
 $(OBJDIR)%.o: $(SRCDIR)%.cpp
 	@mkdir -p $(OBJDIR)
-	@$(CC) -c $(INC) $< -o $@ 
+	@$(CC) $(CFLAGS) -c $(INC) $< -o $@ 
 	@echo $(CC_STR) $*
 
 clean:

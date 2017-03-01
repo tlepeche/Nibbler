@@ -3,7 +3,7 @@
 
 #include <AEntity.hpp>
 
-class Snake: public AEntity
+class Snake: public virtual AEntity
 {
 	Snake();
 	~Snake();

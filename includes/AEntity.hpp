@@ -12,24 +12,28 @@
 #define Y_MAX 200
 
 ///////////////
-enum	eType {Snake, Food};
+typedef enum class	eType
+{
+	SNAKE, FOOD
+}					E_ENTITIES_TYPE;
 
 class AEntity
 {
 	public :
-		AEntity(int x, int y, eType type);
-		~AEntity();
-		AEntity(AEntity const & src);
-		AEntity & operator=(AEntity const & src);
-		
-		std::pair<int, int>	getPos() const;
-		eType				getType() const;
-		void				setPos(std::pair<int, int> pos);
-
+		AEntity(int x, int y, E_ENTITIES_TYPE type);
+		virtual ~AEntity();
+		virtual std::pair<int, int>	getPos() const;
+		virtual E_ENTITIES_TYPE		getType() const;
+		virtual int					getID() const;
+		virtual void				setPos(std::pair<int, int> pos);
+		virtual void				setType(E_ENTITIES_TYPE type);
+		AEntity						(const AEntity &rhs);
+		virtual AEntity				&operator=(AEntity const &rhs);
 	private :
 		AEntity();
-		std::pair<int, int> _pos;
-		const eType			_type;
+		std::pair<int, int> 		_pos;
+		E_ENTITIES_TYPE				_type;
+		int							_id;
 };
 
 #endif
