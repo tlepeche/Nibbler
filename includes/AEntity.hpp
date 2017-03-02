@@ -24,16 +24,15 @@ class AEntity
 		virtual ~AEntity();
 		virtual std::pair<int, int>	getPos() const;
 		virtual E_ENTITIES_TYPE		getType() const;
-		virtual int					getID() const;
 		virtual void				setPos(std::pair<int, int> pos);
 		virtual void				setType(E_ENTITIES_TYPE type);
 		AEntity						(const AEntity &rhs);
 		virtual AEntity				&operator=(AEntity const &rhs);
-	private :
+
+	protected:
 		AEntity();
 		std::pair<int, int> 		_pos;
 		E_ENTITIES_TYPE				_type;
-		int							_id;
 };
 
 #endif

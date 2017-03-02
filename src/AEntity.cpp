@@ -14,13 +14,11 @@ AEntity &AEntity::operator=(AEntity const &rhs)
 {
 	this->_pos = rhs.getPos();
 	this->_type = rhs.getType();
-	this->_id = rhs.getID();
 	return (*this);
 }
 
 std::pair<int, int>	AEntity::getPos() const { return _pos; }
 E_ENTITIES_TYPE		AEntity::getType() const { return _type; }
-int					AEntity::getID() const { return _id; }
 
 void	AEntity::setType(E_ENTITIES_TYPE type)
 {

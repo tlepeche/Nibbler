@@ -5,11 +5,15 @@
 
 class Snake: public virtual AEntity
 {
-	Snake();
-	~Snake();
-	Snake(int x, int y);
+	public :
+		~Snake();
+		Snake(int x, int y);
+		Snake(Snake const & src);
 
-	bool	hasHit(AEntity const & src);
+		bool	hasHit(AEntity const & src);
+
+	private :
+		Snake();
 };
 
 #endif
