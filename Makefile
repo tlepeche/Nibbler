@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sduprey <sduprey@student.42.fr>            +#+  +:+       +#+         #
+#    By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2014/12/17 05:35:05 by sduprey           #+#    #+#              #
-#    Updated: 2017/03/01 20:14:22 by tiboitel         ###   ########.fr        #
+#    Created: 2016/03/10 14:48:27 by tiboitel          #+#    #+#              #
+#    Updated: 2017/03/03 18:40:38 by tiboitel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,10 @@ NAME = nibbler
 SRC = main.cpp \
 	  Snake.cpp \
 	  AEntity.cpp \
-	  Game.cpp
+	  Engine.cpp \
+	  Food.cpp \
+	  Game.cpp \
+	  Exception.cpp
 
 SRCDIR = src/
 

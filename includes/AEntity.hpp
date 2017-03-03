@@ -28,7 +28,6 @@ class AEntity
 		virtual void				setType(E_ENTITIES_TYPE type);
 		AEntity						(const AEntity &rhs);
 		virtual AEntity				&operator=(AEntity const &rhs);
-
 	protected:
 		AEntity();
 		std::pair<int, int> 		_pos;

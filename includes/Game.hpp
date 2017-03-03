@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:02:09 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/02 22:35:02 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/03 18:15:16 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FT_GAME_HPP
 
 #include <vector>
+#include <IRenderer.hpp>
 #include <AEntity.hpp>
 #include <Snake.hpp>
 
@@ -30,6 +31,7 @@ class Game
 		int						addEntities(AEntity *entity);
 		unsigned int			countEntities(void);
 		void					update(void);
+		void					draw(IRenderer *renderer);
 
 	private:
 		std::vector<AEntity *>	_entities;		

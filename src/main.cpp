@@ -1,11 +1,10 @@
-#include <Game.hpp>
-#include <Snake.hpp>
+#include <Engine.hpp>
 
 int main(int ac, char **av)
 {
 	(void)ac;
 	(void)av;
-	Game	*game = new Game();
+/*	Game	*game = new Game();
 	game->init(); // will call lib->init;
 
 	//test a la con pour verifier la liste des entites 
@@ -14,6 +13,11 @@ int main(int ac, char **av)
 		std::cout << "type : " << ((*i)->getType() == E_ENTITIES_TYPE::SNAKE ? "Snake" : "Food")
 			<< " pos:{" << (*i)->getPos().first << ", " << (*i)->getPos().second << "}" << std::endl;
 	}
-	game->start();
+	game->start();*/
+	if (ac != 2)
+		return (-1);
+	Engine		engine(av[1]);
+
+	engine.init();
 	return 0;
 }
