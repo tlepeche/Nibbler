@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/03 18:31:40 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/03 19:55:52 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,16 @@ Engine::Engine(char *DLpath)
 
 	this->_handler = dlopen(DLpath, RTLD_LAZY);
 	if (!this->_handler)
-		std::cerr << dlerror() << std::endl;
+		throw NibblerException("Unable to load .so library.");
 	create_renderer = reinterpret_cast<IRenderer * (*)()>(
 			dlsym(this->_handler, "create_renderer"));
 	if (!create_renderer)
-		std::cerr << dlerror() << std::endl;
+		throw NibblerException("Symbol create_renderer not found \
+				on dynamic library.");
 	this->_renderer = create_renderer();
 	this->_game = new Game();
-	this->_renderer->init(680, 460);
+	this->_game->init();
+	this->_renderer->init(1380, 960);
 }
 
 Engine::Engine(Engine const &rhs)
@@ -51,7 +53,7 @@ Engine &Engine::operator=(Engine const &rhs)
 Engine::~Engine()
 {
 	if (dlclose(this->_handler) != 0)
-		std::cerr << dlerror() << std::endl;
+		throw NibblerException("Unable to close dynamic library");
 	delete _game;
 }
 

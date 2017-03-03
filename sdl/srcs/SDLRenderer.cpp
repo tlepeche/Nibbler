@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:04 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/03 18:05:38 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/03 19:02:25 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,21 @@ E_EVENT_TYPE	SDLRenderer::getLastEvent(void)
 		case SDL_QUIT:
 			return (E_EVENT_TYPE::QUIT);
 			break;
+		case SDL_KEYDOWN:
+			if (_event.key.keysym.sym == SDLK_UP)
+				return (E_EVENT_TYPE::UP);
+			if (_event.key.keysym.sym == SDLK_DOWN)
+				return (E_EVENT_TYPE::DOWN);
+			if (_event.key.keysym.sym == SDLK_LEFT)
+				return (E_EVENT_TYPE::LEFT);
+			if (_event.key.keysym.sym == SDLK_RIGHT)
+					return (E_EVENT_TYPE::RIGHT);
+		break;
 		default:
 			return (E_EVENT_TYPE::UNKNOWN);
 			break;
 	}
+	return (E_EVENT_TYPE::UNKNOWN);
 }
 
 bool SDLRenderer::close()

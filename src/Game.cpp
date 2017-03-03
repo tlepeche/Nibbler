@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:07:14 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/03 18:16:07 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/03 19:55:51 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,7 @@ int						Game::addEntities(AEntity *entity)
 	return (1);
 }
 
-unsigned int			Game::countEntities(void)
-{
-	return (0);
-}
-
 void					Game::update(void)
-{
-}
-
-void					Game::draw(IRenderer *renderer)
-{
-	(void)renderer;
-}
-
-void					Game::start()
 {
 	Snake *SnakeHead = dynamic_cast<Snake *>(*(_entities.begin()));
 	if (!SnakeHead)
@@ -97,5 +83,9 @@ void					Game::start()
 				hit = false;
 			}
 		}
-//	}
+}
+
+void					Game::draw(IRenderer *renderer)
+{
+	(void)renderer;
 }

@@ -17,8 +17,15 @@ AEntity &AEntity::operator=(AEntity const &rhs)
 	return (*this);
 }
 
-std::pair<int, int>	AEntity::getPos() const { return _pos; }
-E_ENTITIES_TYPE		AEntity::getType() const { return _type; }
+std::pair<int, int>	AEntity::getPos() const 
+{ 
+	return _pos; 
+}
+
+E_ENTITIES_TYPE		AEntity::getType() const 
+{
+   	return _type;
+}
 
 void	AEntity::setType(E_ENTITIES_TYPE type)
 {

@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:02:07 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/03 18:28:39 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/03 19:23:31 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <ctime>
 #include <dlfcn.h>
 #include <Game.hpp>
+#include <Exception.hpp>
 #include <IRenderer.hpp>
 # define MS_PER_UPDATE 1
 
