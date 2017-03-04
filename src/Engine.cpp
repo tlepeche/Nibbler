@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/03 19:55:52 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/04 18:59:59 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@ Engine::Engine(char *DLpath)
 
 	this->_handler = dlopen(DLpath, RTLD_LAZY);
 	if (!this->_handler)
-		throw NibblerException("Unable to load .so library.");
+		throw EngineDlsymException("Unable to dlopen. Error", dlerror(),
+				DLpath);
 	create_renderer = reinterpret_cast<IRenderer * (*)()>(
 			dlsym(this->_handler, "create_renderer"));
 	if (!create_renderer)
-		throw NibblerException("Symbol create_renderer not found \
-				on dynamic library.");
+		throw EngineDlsymException("Unable to find symbol. Error", dlerror(),
+				DLpath);
 	this->_renderer = create_renderer();
 	this->_game = new Game();
 	this->_game->init();
@@ -92,4 +93,17 @@ void Engine::handle_game(void)
 		}
 		this->_game->draw(this->_renderer);
 	}
+}
+
+EngineDlsymException::EngineDlsymException(const char *msg, const char *dlerror, const char *library_path) : NibblerException(msg)
+{
+	std::stringstream	ss;
+
+	ss << msg << ": " << dlerror << " on dylib includes : " << library_path;
+	this->_error = ss.str();
+}
+
+const char *EngineDlsymException::what(void) const throw()
+{
+	return (this->_error.c_str());
 }

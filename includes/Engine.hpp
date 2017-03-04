@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:02:07 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/03 19:23:31 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/04 18:57:14 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,14 @@ class Engine
 		void		*_handler;
 };
 
+class EngineDlsymException : public NibblerException
+{
+	public:
+		EngineDlsymException(const char *msg, const char *dlerror, const char
+			*library_path);
+		virtual ~EngineDlsymException() throw () {};
+		virtual const char	*what(void) const throw();
+	private:
+		EngineDlsymException();
+};
 #endif
