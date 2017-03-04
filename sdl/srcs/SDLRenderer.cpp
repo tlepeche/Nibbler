@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:04 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/03 19:02:25 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/04 19:34:22 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,41 @@ E_EVENT_TYPE	SDLRenderer::getLastEvent(void)
 			break;
 	}
 	return (E_EVENT_TYPE::UNKNOWN);
+}
+
+void	SDLRenderer::render(void) const
+{
+	SDL_RenderPresent(_renderer);
+}
+
+void	SDLRenderer::drawSnake(Snake *snake) const
+{
+	SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
+	SDL_Rect		r;
+
+	r.x = snake->getPos().first;
+	r.y = snake->getPos().second;
+	r.h = 16;
+	r.w = 16;
+	SDL_RenderFillRect(_renderer, &r);
+}
+
+void	SDLRenderer::drawFood(Food *food) const
+{
+	SDL_SetRenderDrawColor(_renderer, 255, 255, 0, 255);
+	SDL_Rect		r;
+
+	r.x = food->getPos().first;
+	r.y = food->getPos().second;
+	r.h = 16;
+	r.w = 16;
+	SDL_RenderFillRect(_renderer, &r);
+}
+
+void	SDLRenderer::clear(void) const
+{
+	SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
+	SDL_RenderClear(_renderer);
 }
 
 bool SDLRenderer::close()

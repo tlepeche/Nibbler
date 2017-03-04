@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:07:14 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/03 19:55:51 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/04 19:34:21 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,13 @@ Game::~Game()
 void	Game::init(void)
 {
 	_entities.clear();
-	_entities.push_back(new Snake(10, 10));
-	_entities.push_back(new Snake(11, 10));
-	_entities.push_back(new Snake(12, 10));
-	_entities.push_back(new Snake(13, 10));
+	_entities.push_back(new Snake(1 * 16, 1 * 16));
+	_entities.push_back(new Snake(2 * 16, 1 * 16));
+	_entities.push_back(new Snake(3 * 16, 1 * 16));
+	_entities.push_back(new Snake(4 * 15, 1 * 16));
+	_entities.push_back(new Food(18 * 16, 1*16));
+	_entities.push_back(new Food(4 * 16, 7*16));
+
 }
 
 Game &Game::operator=(Game const &rhs)
@@ -87,5 +90,14 @@ void					Game::update(void)
 
 void					Game::draw(IRenderer *renderer)
 {
-	(void)renderer;
+	renderer->clear();
+	for (std::vector <AEntity *>::iterator it = _entities.begin(); it != _entities.end();
+			it++)
+	{
+		if ((*it)->getType() == E_ENTITIES_TYPE::SNAKE)
+			renderer->drawSnake(dynamic_cast<Snake *>(*it));
+		if ((*it)->getType() == E_ENTITIES_TYPE::FOOD)
+			renderer->drawFood(dynamic_cast<Food *>(*it));
+	}
+	renderer->render();
 }

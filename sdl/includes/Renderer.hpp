@@ -6,16 +6,18 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:13 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/03 18:06:41 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/04 19:31:44 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_RENDERER_HPP
 # define FT_RENDERER_HPP
 
-#include "IRenderer.hpp"
 #include <SDL2/SDL.h>
 #include <iostream>
+#include "IRenderer.hpp"
+#include "Snake.hpp"
+#include "Food.hpp"
 
 class SDLRenderer : public IRenderer
 {
@@ -24,6 +26,10 @@ class SDLRenderer : public IRenderer
 		~SDLRenderer();
 		bool 			init(int windw_w, int windw_h);
 		bool 			close(void);
+		void			render(void) const;
+		void			clear(void) const;
+		void			drawSnake(Snake *snake) const;
+		void			drawFood(Food *food) const;
 		E_EVENT_TYPE	getLastEvent(void);
 	private:
 		SDL_Window		*_window;

@@ -13,6 +13,8 @@ class Snake: public virtual AEntity
 		bool	hasHit(AEntity const & src);
 
 	private :
+		int		_speed;
+		int		_velocity;
 		Snake();
 };
 
