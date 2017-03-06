@@ -6,12 +6,13 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:07:14 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 17:59:27 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/06 18:55:15 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <Game.hpp>
 
+#include <ncurses.h>
 Game::Game()
 {
 }
@@ -91,9 +92,10 @@ void					Game::update(void)
 	}
 }
 
-void					Game::draw(IRenderer *renderer)
+bool					Game::draw(IRenderer *renderer)
 {
-	renderer->clearScreen();
+	if (!(renderer->clearScreen()))
+		return false;
 	for (std::vector <AEntity *>::iterator it = _entities.begin(); it != _entities.end();
 			it++)
 	{
@@ -103,4 +105,5 @@ void					Game::draw(IRenderer *renderer)
 			renderer->drawFood(dynamic_cast<Food *>(*it));
 	}
 	renderer->render();
+	return true;
 }

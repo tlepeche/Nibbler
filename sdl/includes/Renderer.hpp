@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:13 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 17:24:43 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/06 19:21:51 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class SDLRenderer : public IRenderer
 		~SDLRenderer();
 		bool 			init(int windw_w, int windw_h);
 		bool 			close(void);
-		bool			render(void) const;
+		void			render(void) const;
 		void			clearScreen(void) const;
 		void			drawSnake(Snake *snake) const;
 		void			drawFood(Food *food) const;

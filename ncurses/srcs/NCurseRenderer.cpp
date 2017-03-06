@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 14:19:45 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/06 17:31:27 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/06 19:21:33 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ bool	NCurseRenderer::init(int wind_w, int wind_h)
 		refresh();
 	else
 	{
+		_width = wind_w;
+		_height = wind_h;
 		initscr();
 		cbreak(); //allow only one character at a time input
 		noecho(); //stop inputs echoing
@@ -35,21 +37,27 @@ bool	NCurseRenderer::init(int wind_w, int wind_h)
 		start_color();
 		init_pair(1, COLOR_WHITE, COLOR_WHITE); //SNAKE
 		init_pair(2, COLOR_YELLOW, COLOR_YELLOW); // FOOD
-		/*	init_pair(3, COLOR_WHITE, COLOR_BLACK);
-			init_pair(4, COLOR_CYAN, COLOR_BLACK);
-			init_pair(5, COLOR_GREEN, COLOR_BLACK);
-			init_pair(6, COLOR_MAGENTA, COLOR_BLACK);
-			init_pair(7, COLOR_BLUE, COLOR_BLACK);*/
-		_window = newwin(wind_w, wind_h * 2, 0, 0);
+		_window = newwin(_width, _height, 0, 0);
 		_IsCurseInit = true;
+		return true;
 	}
-	endwin();
-	return true;
+	return false;
 }
 
 E_EVENT_TYPE NCurseRenderer::getLastEvent()
 {
 	int ch = getch();
+	int x, y;
+	getmaxyx(stdscr, y, x);
+	if (x < _width || y < _height)
+	{
+		clear();
+		mvprintw(y / 2, x / 2 - 10, "Window is too small to play");
+		mvprintw(y / 2 + 1, x / 2 - 2, "Game paused");
+		mvprintw(y / 2 + 2, x / 2 - 2, "X = %d(min %d), Y= %d(min %d)", x, _width, y, _height);
+		refresh();
+		return (E_EVENT_TYPE::RESIZE);
+	}
 	switch (ch)
 	{
 		case KEY_UP:
@@ -74,52 +82,30 @@ E_EVENT_TYPE NCurseRenderer::getLastEvent()
 	return (E_EVENT_TYPE::UNKNOWN);
 }
 
-bool	NCurseRenderer::render() const
+void	NCurseRenderer::render() const
 {
 	refresh();
-	return (true);
 }
 
 void	NCurseRenderer::drawFood(Food *food) const
 {
-	int y = 0;
-	while (y < 1)
-	{
-		int x = 0;
-		while (x < 2)
-		{
-			move(food->getPos().second + y, food->getPos().first + x);	
-			attron(COLOR_PAIR(2));
-			printw("#");
-			attroff(COLOR_PAIR(2));
-			x++;
-		}
-		y++;
-	}
+	move(food->getPos().second, food->getPos().first);	
+	attron(COLOR_PAIR(2));
+	printw("#");
+	attroff(COLOR_PAIR(2));
 }
 
 void	NCurseRenderer::drawSnake(Snake *snake) const
 {
-	int y = 0;
-	while (y < 1)
-	{
-		int x = 0;
-		while (x < 2)
-		{
-			move(snake->getPos().second + y, snake->getPos().first + x);	
-			attron(COLOR_PAIR(1));
-			printw("#");
-			attroff(COLOR_PAIR(1));
-			x++;
-		}
-		y++;
-	}
+	move(snake->getPos().second, snake->getPos().first);	
+	attron(COLOR_PAIR(1));
+	printw("#");
+	attroff(COLOR_PAIR(1));
 }
 
 void	NCurseRenderer::clearScreen() const
 {
 	clear();
-	refresh();
 }
 
 bool	NCurseRenderer::close()

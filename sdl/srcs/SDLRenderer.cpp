@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:04 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 18:19:20 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/06 19:22:56 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,9 @@ E_EVENT_TYPE	SDLRenderer::getLastEvent(void)
 	return (E_EVENT_TYPE::UNKNOWN);
 }
 
-bool	SDLRenderer::render(void) const
+void	SDLRenderer::render(void) const
 {
 	SDL_RenderPresent(_renderer);
-	return (true);
 }
 
 void	SDLRenderer::drawSnake(Snake *snake) const

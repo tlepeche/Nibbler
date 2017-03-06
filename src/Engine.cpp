@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 18:28:12 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/06 19:20:28 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	Engine::setRenderer(const char *DLpath)
 		throw EngineDlsymException("Unable to find symbol. Error", dlerror(),
 				DLpath);
 	this->_renderer = create_renderer();
-	if (!this->_renderer->init(1380, 960))
+	if (!this->_renderer->init(1380/16, 960/16))
 		throw NibblerException("Unable to initialize dynamic renderer.");
 	this->_isPaused = false;
 }
@@ -94,14 +94,12 @@ void Engine::handleGame(void)
 	double 				lag = 0;
 	E_EVENT_TYPE		event;
 	bool				running;
-
 	running = true;
 	while (running)
 	{
 		std::clock_t	current =  std::clock();
 		double		 	elapsed = current - previous;
 
-		lag += elapsed / (CLOCKS_PER_SEC / 1000);
 		event = _renderer->getLastEvent();
 		if (event == E_EVENT_TYPE::QUIT)
 		{
@@ -113,8 +111,9 @@ void Engine::handleGame(void)
 			this->setRenderer("sdl/sdl_renderer.so");
 		if (event == E_EVENT_TYPE::LOAD_LIBRARY_TWO)
 			this->setRenderer("ncurses/ncurse_renderer.so");
-		if (this->_isPaused == false)
+		if (this->_isPaused == false && event != E_EVENT_TYPE::RESIZE)
 		{
+			lag += elapsed / (CLOCKS_PER_SEC / 1000);
 			_game->handleInputs(event);
 			while (lag >= MS_PER_UPDATE)
 			{
