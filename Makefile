@@ -6,7 +6,7 @@
 #    By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/10 14:48:27 by tiboitel          #+#    #+#              #
-#    Updated: 2017/03/04 18:57:19 by tiboitel         ###   ########.fr        #
+#    Updated: 2017/03/06 15:25:35 by tlepeche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,13 +34,17 @@ INC = -I includes
 
 CFLAGS = -Wall -Werror -Wextra -std=c++11 -fsanitize=address
 
-all: $(NAME)
+all: $(NAME) LIB 
 
 $(NAME): $(OBJ)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
 	@echo ""
 	@echo $(PX_STR) : $(EX_COLOR)$(NAME)$(NO_COLOR)
 	@echo ""
+
+LIB:
+	make -C ncurses/
+	make -C sdl/
 
 $(OBJDIR)%.o: $(SRCDIR)%.cpp
 	@mkdir -p $(OBJDIR)
@@ -52,6 +56,8 @@ clean:
 	@echo $(RM_STR) objects
 
 fclean: clean
+	make -C ncurses/ fclean
+	make -C sdl/ fclean
 	@$(RM) $(NAME)
 	@echo $(RM_STR) $(NAME)
 

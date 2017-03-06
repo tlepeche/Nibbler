@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:07:14 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/04 19:34:21 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/06 16:32:44 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,18 @@ Game::~Game()
 void	Game::init(void)
 {
 	_entities.clear();
-	_entities.push_back(new Snake(1 * 16, 1 * 16));
+/*	_entities.push_back(new Snake(1 * 16, 1 * 16));
 	_entities.push_back(new Snake(2 * 16, 1 * 16));
 	_entities.push_back(new Snake(3 * 16, 1 * 16));
-	_entities.push_back(new Snake(4 * 15, 1 * 16));
+	_entities.push_back(new Snake(4 * 16, 1 * 16));
 	_entities.push_back(new Food(18 * 16, 1*16));
-	_entities.push_back(new Food(4 * 16, 7*16));
+	_entities.push_back(new Food(4 * 16, 7*16));*/
+	_entities.push_back(new Snake(1, 1));
+	_entities.push_back(new Snake(2, 1));
+	_entities.push_back(new Snake(3, 1));
+	_entities.push_back(new Snake(4, 1));
+	_entities.push_back(new Food(18, 1));
+	_entities.push_back(new Food(4, 7));
 
 }
 
@@ -78,7 +84,7 @@ void					Game::update(void)
 			}
 			//on est 1 tick apres que la queue ait depasse la case fruit
 			//	 -> on add une case au snake a l'endroit ou etait le fruit
-			if (hit && (*it)->getType() == E_ENTITIES_TYPE::FOOD && !SnakeHead->hasHit(**it))
+			if (hit && (*it)->getType() == E_ENTITIES_TYPE::FOOD && !SnakeHead->hasHit(**it)) //condition a modifier
 			{
 				//	on change le type de FOOD en SNAKE, la position est deja bonne;
 				//	-> evite de creer une entite SNAKE et delete l'entite FOOD
