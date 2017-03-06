@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:02:07 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/04 18:57:14 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/06 17:54:12 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,11 @@ class Engine
 		Engine		(const Engine &rhs);
 		Engine		&operator=(Engine const &rhs);
 		bool		init(void);
-		void		handle_game(void);
+		void		handleGame(void);
+		void		setRenderer(const char *DLPath);
 	private:
 		Engine();
+		bool		_isPaused;
 		void		draw();
 		Game		*_game;
 		IRenderer	*_renderer;

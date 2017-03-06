@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 17:33:39 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/06 17:54:14 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,14 @@ Engine::Engine()
 
 Engine::Engine(char *DLpath)
 {
-	IRenderer		*(*create_renderer)();
-
-	this->_handler = dlopen(DLpath, RTLD_LAZY);
-	if (!this->_handler)
-		throw EngineDlsymException("Unable to dlopen. Error", dlerror(),
-				DLpath);
-	create_renderer = reinterpret_cast<IRenderer * (*)()>(
-			dlsym(this->_handler, "create_renderer"));
-	if (!create_renderer)
-		throw EngineDlsymException("Unable to find symbol. Error", dlerror(),
-				DLpath);
-	this->_renderer = create_renderer();
+	try
+	{
+		this->setRenderer(DLpath);
+	} catch (std::exception &e)
+	{
+		throw(&e);
+	}
 	this->_game = new Game();
-	this->_game->init();
-	this->_renderer->init(1380, 960);
 }
 
 Engine::Engine(Engine const &rhs)
@@ -53,18 +46,47 @@ Engine &Engine::operator=(Engine const &rhs)
 
 Engine::~Engine()
 {
+	delete _renderer;
 	if (dlclose(this->_handler) != 0)
-		throw NibblerException("Unable to close dynamic library");
+		throw NibblerException("Unable to close handler.");
 	delete _game;
 }
 
-bool Engine::init(void)
+void	Engine::setRenderer(const char *DLpath)
 {
-	handle_game();
+	IRenderer		*(*create_renderer)();
+
+	if (this->_handler != NULL)
+	{
+		this->_renderer->close();
+		if (dlclose(this->_handler) != 0)
+			throw EngineDlsymException("Unable to close handler. Error", dlerror(),
+					DLpath);
+		this->_handler = NULL;
+	}
+	this->_handler = dlopen(DLpath, RTLD_LAZY);
+	if (!this->_handler)
+		throw EngineDlsymException("Unable to dlopen. Error", dlerror(),
+				DLpath);
+	create_renderer = reinterpret_cast<IRenderer * (*)()>(
+			dlsym(this->_handler, "create_renderer"));
+	if (!create_renderer)
+		throw EngineDlsymException("Unable to find symbol. Error", dlerror(),
+				DLpath);
+	this->_renderer = create_renderer();
+}
+
+bool	Engine::init(void)
+{
+	this->_game->init();
+	if (!this->_renderer->init(1380, 960))
+		return (false);
+	_isPaused = false;
+	handleGame();
 	return (true);
 }
 
-void Engine::handle_game(void)
+void Engine::handleGame(void)
 {
 	std::clock_t 		previous = std::clock();
 	double 				lag = 0;
@@ -72,10 +94,12 @@ void Engine::handle_game(void)
 	bool				running;
 
 	running = true;
+
 	while (running)
 	{
 		std::clock_t	current =  std::clock();
 		double		 	elapsed = current - previous;
+
 		lag += elapsed / (CLOCKS_PER_SEC / 1000);
 		event = _renderer->getLastEvent();
 		if (event == E_EVENT_TYPE::QUIT)
@@ -84,13 +108,16 @@ void Engine::handle_game(void)
 			_renderer->close();
 			return ;
 		}
-		_game->handleInputs(event);
-		while (lag >= MS_PER_UPDATE)
+		if (!this->_isPaused)
 		{
-			this->_game->update();
-			lag -= MS_PER_UPDATE;
+			_game->handleInputs(event);
+			while (lag >= MS_PER_UPDATE)
+			{
+				this->_game->update();
+				lag -= MS_PER_UPDATE;
+			}
+			this->_game->draw(this->_renderer);
 		}
-		this->_game->draw(this->_renderer);
 	}
 }
 
