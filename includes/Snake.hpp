@@ -15,6 +15,8 @@ class Snake: public virtual AEntity
 	private :
 		int		_speed;
 		int		_velocity;
+		int		_vector_x;
+		int		_vector_y;
 		Snake();
 };
 

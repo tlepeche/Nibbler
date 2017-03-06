@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:02:09 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/03 19:27:33 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/06 17:19:29 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ class Game
 		int						addEntities(AEntity *entity);
 		void					update(void);
 		void					draw(IRenderer *renderer);
-
+		void					handleInputs(E_EVENT_TYPE &event);
 	private:
 		std::vector<AEntity *>	_entities;		
 };

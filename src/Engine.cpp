@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 15:38:17 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/06 17:33:39 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,9 @@ void Engine::handle_game(void)
 		{
 			running = false;
 			_renderer->close();
+			return ;
 		}
-		/*
-		 ** Si l'event est d'un type different le transmettre a game.
-		 */
+		_game->handleInputs(event);
 		while (lag >= MS_PER_UPDATE)
 		{
 			this->_game->update();

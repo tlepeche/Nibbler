@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 14:19:45 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/06 16:17:23 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/06 17:31:27 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,10 @@ E_EVENT_TYPE NCurseRenderer::getLastEvent()
 	return (E_EVENT_TYPE::UNKNOWN);
 }
 
-void	NCurseRenderer::render() const
+bool	NCurseRenderer::render() const
 {
 	refresh();
+	return (true);
 }
 
 void	NCurseRenderer::drawFood(Food *food) const
@@ -115,9 +116,9 @@ void	NCurseRenderer::drawSnake(Snake *snake) const
 	}
 }
 
-void	NCurseRenderer::clear() const
+void	NCurseRenderer::clearScreen() const
 {
-	//	clear();
+	clear();
 	refresh();
 }
 

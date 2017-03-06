@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:04 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 15:09:06 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/06 17:25:03 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,10 @@ E_EVENT_TYPE	SDLRenderer::getLastEvent(void)
 	return (E_EVENT_TYPE::UNKNOWN);
 }
 
-void	SDLRenderer::render(void) const
+bool	SDLRenderer::render(void) const
 {
 	SDL_RenderPresent(_renderer);
+	return (true);
 }
 
 void	SDLRenderer::drawSnake(Snake *snake) const
@@ -94,7 +95,7 @@ void	SDLRenderer::drawFood(Food *food) const
 	SDL_RenderFillRect(_renderer, &r);
 }
 
-void	SDLRenderer::clear(void) const
+void	SDLRenderer::clearScreen(void) const
 {
 	SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
 	SDL_RenderClear(_renderer);

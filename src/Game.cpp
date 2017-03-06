@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:07:14 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 16:32:44 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/06 17:28:10 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,6 @@ Game::~Game()
 void	Game::init(void)
 {
 	_entities.clear();
-/*	_entities.push_back(new Snake(1 * 16, 1 * 16));
-	_entities.push_back(new Snake(2 * 16, 1 * 16));
-	_entities.push_back(new Snake(3 * 16, 1 * 16));
-	_entities.push_back(new Snake(4 * 16, 1 * 16));
-	_entities.push_back(new Food(18 * 16, 1*16));
-	_entities.push_back(new Food(4 * 16, 7*16));*/
 	_entities.push_back(new Snake(1, 1));
 	_entities.push_back(new Snake(2, 1));
 	_entities.push_back(new Snake(3, 1));
@@ -60,43 +54,46 @@ int						Game::addEntities(AEntity *entity)
 	return (1);
 }
 
+void					Game::handleInputs(E_EVENT_TYPE &event)
+{
+	(void)event;
+}
+
 void					Game::update(void)
 {
 	Snake *SnakeHead = dynamic_cast<Snake *>(*(_entities.begin()));
 	if (!SnakeHead)
 		std::cout << "NULL" << std::endl;
 	bool hit = false;
-//	while (1)
-//	{
-		for (std::vector<AEntity *>::iterator it = _entities.begin() ; it != _entities.end() ; it++)
+	for (std::vector<AEntity *>::iterator it = _entities.begin() ; it != _entities.end() ; it++)
+	{
+		if (SnakeHead->hasHit(**it) && !hit) // == la tete a hit un truc
 		{
-			if (SnakeHead->hasHit(**it) && !hit) // == la tete a hit un truc
+			//on a hit un fruit -> passage bool a true et attente de le depasser pour add une case au snake
+			if ((*it)->getType() == E_ENTITIES_TYPE::FOOD)
+				hit = true;
+			// on a hit autre chose (wall ou snake) du coup GAME OVER
+			else
 			{
-				//on a hit un fruit -> passage bool a true et attente de le depasser pour add une case au snake
-				if ((*it)->getType() == E_ENTITIES_TYPE::FOOD)
-					hit = true;
-				// on a hit autre chose (wall ou snake) du coup GAME OVER
-				else
-				{
-					std::cout << "GAME OVER" << std::endl;
-					return ;
-				}
-			}
-			//on est 1 tick apres que la queue ait depasse la case fruit
-			//	 -> on add une case au snake a l'endroit ou etait le fruit
-			if (hit && (*it)->getType() == E_ENTITIES_TYPE::FOOD && !SnakeHead->hasHit(**it)) //condition a modifier
-			{
-				//	on change le type de FOOD en SNAKE, la position est deja bonne;
-				//	-> evite de creer une entite SNAKE et delete l'entite FOOD
-				(*it)->setType(E_ENTITIES_TYPE::SNAKE);
-				hit = false;
+				std::cout << "GAME OVER" << std::endl;
+				return ;
 			}
 		}
+		//on est 1 tick apres que la queue ait depasse la case fruit
+		//	 -> on add une case au snake a l'endroit ou etait le fruit
+		if (hit && (*it)->getType() == E_ENTITIES_TYPE::FOOD && !SnakeHead->hasHit(**it)) //condition a modifier
+		{
+			//	on change le type de FOOD en SNAKE, la position est deja bonne;
+			//	-> evite de creer une entite SNAKE et delete l'entite FOOD
+			(*it)->setType(E_ENTITIES_TYPE::SNAKE);
+			hit = false;
+		}
+	}
 }
 
 void					Game::draw(IRenderer *renderer)
 {
-	renderer->clear();
+	renderer->clearScreen();
 	for (std::vector <AEntity *>::iterator it = _entities.begin(); it != _entities.end();
 			it++)
 	{
