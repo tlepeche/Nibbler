@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 17:54:14 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/06 18:28:12 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	Engine::setRenderer(const char *DLpath)
 {
 	IRenderer		*(*create_renderer)();
 
+	this->_isPaused = true;
 	if (this->_handler != NULL)
 	{
 		this->_renderer->close();
@@ -74,15 +75,16 @@ void	Engine::setRenderer(const char *DLpath)
 		throw EngineDlsymException("Unable to find symbol. Error", dlerror(),
 				DLpath);
 	this->_renderer = create_renderer();
+	if (!this->_renderer->init(1380, 960))
+		throw NibblerException("Unable to initialize dynamic renderer.");
+	this->_isPaused = false;
 }
 
 bool	Engine::init(void)
 {
 	this->_game->init();
-	if (!this->_renderer->init(1380, 960))
-		return (false);
 	_isPaused = false;
-	handleGame();
+	this->handleGame();
 	return (true);
 }
 
@@ -94,7 +96,6 @@ void Engine::handleGame(void)
 	bool				running;
 
 	running = true;
-
 	while (running)
 	{
 		std::clock_t	current =  std::clock();
@@ -108,7 +109,11 @@ void Engine::handleGame(void)
 			_renderer->close();
 			return ;
 		}
-		if (!this->_isPaused)
+		if (event == E_EVENT_TYPE::LOAD_LIBRARY_ONE)
+			this->setRenderer("sdl/sdl_renderer.so");
+		if (event == E_EVENT_TYPE::LOAD_LIBRARY_TWO)
+			this->setRenderer("ncurses/ncurse_renderer.so");
+		if (this->_isPaused == false)
 		{
 			_game->handleInputs(event);
 			while (lag >= MS_PER_UPDATE)

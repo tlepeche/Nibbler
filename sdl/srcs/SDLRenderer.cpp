@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:04 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 17:38:49 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/06 18:19:20 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,16 @@ E_EVENT_TYPE	SDLRenderer::getLastEvent(void)
 			if (_event.key.keysym.sym == SDLK_LEFT)
 				return (E_EVENT_TYPE::LEFT);
 			if (_event.key.keysym.sym == SDLK_RIGHT)
-					return (E_EVENT_TYPE::RIGHT);
-		break;
+				return (E_EVENT_TYPE::RIGHT);
+			if (_event.key.keysym.sym == SDLK_ESCAPE)
+				return (E_EVENT_TYPE::QUIT);
+			if (_event.key.keysym.sym == SDLK_1)
+				return (E_EVENT_TYPE::LOAD_LIBRARY_ONE);
+			if (_event.key.keysym.sym == SDLK_2)
+				return (E_EVENT_TYPE::LOAD_LIBRARY_TWO);
+			if (_event.key.keysym.sym == SDLK_3)
+				return (E_EVENT_TYPE::LOAD_LIBRARY_THREE);
+			break;
 		default:
 			return (E_EVENT_TYPE::UNKNOWN);
 			break;
