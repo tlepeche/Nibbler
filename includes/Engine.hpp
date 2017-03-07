@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:02:07 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/07 16:26:28 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/07 22:07:04 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <Game.hpp>
 #include <Exception.hpp>
 #include <IRenderer.hpp>
-# define MS_PER_UPDATE 1
+# define MS_PER_UPDATE 0.5
 
 class Engine
 {

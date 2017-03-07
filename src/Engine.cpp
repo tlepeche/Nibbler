@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/07 21:26:36 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/07 22:06:56 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,18 @@ bool	Engine::init(void)
 
 void Engine::handleGame(void)
 {
+	std::clock_t previous = std::clock();
+	double				lag = 0.0;
 	E_EVENT_TYPE		event;
 	bool				running = true;
+	int					frame;
+
+	frame = 0;	
 	while (running)
 	{
-		std::clock_t 		start = std::clock();
+		std::clock_t current = std::clock();
+		double elapsed = (double)(current - previous);
+		lag += elapsed / (CLOCKS_PER_SEC /	1000);
 		event = _renderer->getLastEvent();
 		if (event == E_EVENT_TYPE::QUIT)
 		{
@@ -131,13 +138,16 @@ void Engine::handleGame(void)
 		{
 			if (!_hasLost)
 				_game->handleInputs(event);
+			while (lag >= MS_PER_UPDATE)
+			{
+				if (!(this->_game->update()))
+					_hasLost = true;
+				lag -= MS_PER_UPDATE;
+			}
 			this->_game->draw(this->_renderer, _hasLost);
-			if (!(this->_game->update()))
-				_hasLost = true;
 		}
-		std::clock_t	end =  std::clock();
-		//usleep a remplacer
-		usleep(68000 - (1000 * (end - start) / CLOCKS_PER_SEC));
+		frame++;
+		std::cout << frame  << std::endl;
 	}
 }
 
