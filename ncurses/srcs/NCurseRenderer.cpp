@@ -6,12 +6,13 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 14:19:45 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/07 17:29:12 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/07 21:26:03 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ncurses.h>
 #include <NCurseRenderer.hpp>
+#include <sstream>
 
 NCurseRenderer::NCurseRenderer(): _IsCurseInit(false)
 {}
@@ -21,20 +22,20 @@ NCurseRenderer::~NCurseRenderer() {}
 void	NCurseRenderer::drawLimits() const
 {
 	int i = 0;
-	while (i <= _width + 1)
+	while (i <= _width)
 	{
 		attron(COLOR_PAIR(1));
-		mvprintw(0, i, "#");
+		mvprintw(1, i, "#");
 		mvprintw(_height + 1, i, "#");
 		attroff(COLOR_PAIR(1));
 		i++;
 	}
-	int j = 0;
+	int j = 1;
 	while (j <= _height + 1)
 	{
 		attron(COLOR_PAIR(1));
 		mvprintw(j, 0, "#");
-		mvprintw(j, _width + 1, "#");
+		mvprintw(j, _width, "#");
 		attroff(COLOR_PAIR(1));
 		j++;
 	}
@@ -46,8 +47,8 @@ bool	NCurseRenderer::init(int wind_w, int wind_h)
 		refresh();
 	else
 	{
-		_width = wind_w;
-		_height = wind_h;
+		_width = wind_w + 1;
+		_height = wind_h + 1;
 		initscr();
 		cbreak(); //allow only one character at a time input
 		noecho(); //stop inputs echoing
@@ -60,7 +61,7 @@ bool	NCurseRenderer::init(int wind_w, int wind_h)
 		init_pair(1, COLOR_WHITE, COLOR_WHITE); //SNAKE
 		init_pair(2, COLOR_YELLOW, COLOR_YELLOW); // FOOD
 		init_pair(3, COLOR_GREEN, COLOR_GREEN); // FOOD
-		_window = newwin(_width+1, _height+1, 0, 0);
+		_window = newwin(_width, _height + 1, 0, 0);
 		_IsCurseInit = true;
 		return true;
 	}
@@ -123,15 +124,23 @@ void	NCurseRenderer::render() const
 void	NCurseRenderer::drawFood(Food *food) const
 {
 	attron(COLOR_PAIR(2));
-	mvprintw(food->getPos().second + 1, food->getPos().first + 1, "#");
+	mvprintw(food->getPos().second + 2, food->getPos().first + 1, "#");
 	attroff(COLOR_PAIR(2));
 }
 
 void	NCurseRenderer::drawSnake(Snake *snake) const
 {
 	attron(COLOR_PAIR(3));
-	mvprintw(snake->getPos().second + 1, snake->getPos().first + 1, "#");
+	mvprintw(snake->getPos().second + 2, snake->getPos().first + 1, "#");
 	attroff(COLOR_PAIR(3));
+}
+
+void	NCurseRenderer::drawScore(size_t score) const
+{
+	std::stringstream ss;
+	ss << score;	
+	std::string scoring = "SCORE : " + ss.str() ;
+	mvprintw(0, (_width - scoring.size()) / 2, scoring.c_str());
 }
 
 void	NCurseRenderer::drawGO() const

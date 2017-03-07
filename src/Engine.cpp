@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/07 17:44:36 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/07 21:26:36 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ void Engine::handleGame(void)
 {
 	E_EVENT_TYPE		event;
 	bool				running = true;
-	std::clock_t		launch = std::clock();
 	while (running)
 	{
 		std::clock_t 		start = std::clock();
@@ -137,8 +136,8 @@ void Engine::handleGame(void)
 				_hasLost = true;
 		}
 		std::clock_t	end =  std::clock();
-		std::cout << "LAUNCH - END => " << 1000 *(end - launch)/ CLOCKS_PER_SEC << std::endl;
-		usleep(17000 - (1000 * (end - start) / CLOCKS_PER_SEC));
+		//usleep a remplacer
+		usleep(68000 - (1000 * (end - start) / CLOCKS_PER_SEC));
 	}
 }
 

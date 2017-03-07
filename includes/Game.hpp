@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:02:09 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/07 17:37:03 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/07 21:05:04 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,18 @@ class Game
 		Game					(const Game &rhs);
 		Game 					&operator=(Game const &rhs);
 		std::vector<AEntity *>	getEntities() const;
+		size_t					getScore() const;
 		int						addEntities(AEntity *entity);
 		bool					update(void);
 		void					draw(IRenderer *renderer, bool hasLost);
 
 		std::pair<int, int>		changePos(AEntity * entity, std::pair<int, int> newPos);
 		void					handleInputs(E_EVENT_TYPE &event);
+		void					setScore(size_t score);
+
 	private:
 		std::vector<AEntity *>	_entities;		
-		double					_speed;
+		size_t					_score;
 };
 
 #endif

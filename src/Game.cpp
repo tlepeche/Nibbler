@@ -6,13 +6,12 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:07:14 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/07 17:44:29 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/07 21:31:45 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <Game.hpp>
 
-#include <ncurses.h>
 Game::Game()
 {
 }
@@ -28,14 +27,16 @@ Game::~Game()
 
 void	Game::init(void)
 {
+	_score = 0;
 	std::srand(time(NULL));
-	_speed = 1;
 	_entities.clear();
-	_entities.push_back(new Snake(4, 1));
-	_entities.push_back(new Snake(3, 1));
-	_entities.push_back(new Snake(2, 1));
-	_entities.push_back(new Snake(1, 1));
+	//snake pop au milieu de lecran (cf consigne)
+	_entities.push_back(new Snake(1380 / 32, 960 / 32));
+	_entities.push_back(new Snake(1380 / 32 - 1, 960 / 32));
+	_entities.push_back(new Snake(1380 / 32 - 2, 960 / 32));
+	_entities.push_back(new Snake(1380 / 32 - 3, 960 / 32));
 	_entities.push_back(new Food(4, 7));
+	dynamic_cast<Snake *>((*_entities.begin()))->setVectorX(1);
 }
 
 Game &Game::operator=(Game const &rhs)
@@ -48,6 +49,13 @@ Game &Game::operator=(Game const &rhs)
 }
 
 std::vector<AEntity *>	Game::getEntities(void) const { return this->_entities; }
+
+size_t					Game::getScore() const { return _score; }
+
+void					Game::setScore(size_t score)
+{
+	_score = score;
+}
 
 int						Game::addEntities(AEntity *entity)
 {
@@ -76,14 +84,14 @@ void					Game::handleInputs(E_EVENT_TYPE &event)
 		case (E_EVENT_TYPE::UP):
 			if (SnakeHead->getVectorY() != 1)
 			{
-				SnakeHead->setVectorY(static_cast<int>(_speed * -1));
+				SnakeHead->setVectorY(-1);
 				SnakeHead->setVectorX(0);
 			}
 			break;
 		case (E_EVENT_TYPE::DOWN):
 			if (SnakeHead->getVectorY() != -1)
 			{
-				SnakeHead->setVectorY(static_cast<int>(_speed * 1));
+				SnakeHead->setVectorY(1);
 				SnakeHead->setVectorX(0);
 			}
 			break;
@@ -91,21 +99,20 @@ void					Game::handleInputs(E_EVENT_TYPE &event)
 			if (SnakeHead->getVectorX() != -1)
 			{
 				SnakeHead->setVectorY(0);
-				SnakeHead->setVectorX(static_cast<int>(_speed * 1));
+				SnakeHead->setVectorX(1);
 			}
 			break;
 		case (E_EVENT_TYPE::LEFT):
 			if (SnakeHead->getVectorX() != 1)
 			{
 				SnakeHead->setVectorY(0);
-				SnakeHead->setVectorX(static_cast<int>(_speed * -1));
+				SnakeHead->setVectorX(-1);
 			}
 			break;
 		default:
 			break;
 	}
 	//Deplacement de la tete du snake et de toutes les autres entites snakes
-
 	std::pair<int, int> tmp(0, 0);
 	tmp = SnakeHead->getPos();
 
@@ -114,14 +121,11 @@ void					Game::handleInputs(E_EVENT_TYPE &event)
 	if (newPos != tmp)
 	{
 		SnakeHead->setPos(newPos);
-
 		for (std::vector<AEntity *>::iterator it = _entities.begin() + 1; it != _entities.end() ; it++)
-		{
 			tmp = changePos(*it, tmp);
-		}
 	}
 }
-#include <unistd.h>
+
 bool					Game::update(void)
 {
 	Snake	*SnakeHead = dynamic_cast<Snake *>(*(_entities.begin()));
@@ -138,8 +142,7 @@ bool					Game::update(void)
 			{
 				hit = true;
 				Fruit = dynamic_cast<Food *>(*it);
-				// break == impossible d'avoir un fruit qui 'pop' sur le snake
-				break;
+				_score += Fruit->getScore();
 			}
 			else
 				return false;
@@ -164,6 +167,7 @@ void					Game::draw(IRenderer *renderer, bool hasLost)
 	for (std::vector <AEntity *>::iterator it = _entities.begin(); it != _entities.end();
 			it++)
 	{
+		renderer->drawScore(_score);
 		if ((*it)->getType() == E_ENTITIES_TYPE::SNAKE)
 			renderer->drawSnake(dynamic_cast<Snake *>(*it));
 		if ((*it)->getType() == E_ENTITIES_TYPE::FOOD)
