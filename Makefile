@@ -6,7 +6,7 @@
 #    By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/10 14:48:27 by tiboitel          #+#    #+#              #
-#    Updated: 2017/03/07 15:07:30 by tlepeche         ###   ########.fr        #
+#    Updated: 2017/03/07 21:52:47 by tiboitel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,11 @@ fclean: clean
 	@echo $(RM_STR) $(NAME)
 
 re: fclean all
+
+sdl_install:
+	curl https://dl.dropboxusercontent.com/u/22561204/SDL/Archive.zip > /tmp/Archive.zip
+	unzip -o /tmp/Archive.zip -d ~/Library/Frameworks/
+
 
 NO_COLOR = "\033[0;0m"
 CC_COLOR = "\033[0;33m"
