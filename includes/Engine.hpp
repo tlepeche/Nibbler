@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:02:07 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 17:54:12 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/07 16:26:28 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ class Engine
 	private:
 		Engine();
 		bool		_isPaused;
+		bool		_hasLost;
 		void		draw();
 		Game		*_game;
 		IRenderer	*_renderer;

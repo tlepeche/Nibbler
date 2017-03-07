@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:07:14 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 18:55:15 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/07 17:44:29 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ Game::~Game()
 
 void	Game::init(void)
 {
+	std::srand(time(NULL));
+	_speed = 1;
 	_entities.clear();
-	_entities.push_back(new Snake(1, 1));
-	_entities.push_back(new Snake(2, 1));
-	_entities.push_back(new Snake(3, 1));
 	_entities.push_back(new Snake(4, 1));
-	_entities.push_back(new Food(18, 1));
+	_entities.push_back(new Snake(3, 1));
+	_entities.push_back(new Snake(2, 1));
+	_entities.push_back(new Snake(1, 1));
 	_entities.push_back(new Food(4, 7));
-
 }
 
 Game &Game::operator=(Game const &rhs)
@@ -55,47 +55,112 @@ int						Game::addEntities(AEntity *entity)
 	return (1);
 }
 
-void					Game::handleInputs(E_EVENT_TYPE &event)
+std::pair<int, int>		Game::changePos(AEntity *entity, std::pair<int, int> newPos)
 {
-	(void)event;
+	if (entity->getType() == E_ENTITIES_TYPE::SNAKE)
+	{
+		std::pair<int, int> tmp;
+		tmp = entity->getPos();
+		entity->setPos(newPos);
+		return tmp;
+	}
+	return newPos;
 }
 
-void					Game::update(void)
+void					Game::handleInputs(E_EVENT_TYPE &event)
 {
 	Snake *SnakeHead = dynamic_cast<Snake *>(*(_entities.begin()));
+	// First: chercher si la direction a changee
+	switch (event)
+	{
+		case (E_EVENT_TYPE::UP):
+			if (SnakeHead->getVectorY() != 1)
+			{
+				SnakeHead->setVectorY(static_cast<int>(_speed * -1));
+				SnakeHead->setVectorX(0);
+			}
+			break;
+		case (E_EVENT_TYPE::DOWN):
+			if (SnakeHead->getVectorY() != -1)
+			{
+				SnakeHead->setVectorY(static_cast<int>(_speed * 1));
+				SnakeHead->setVectorX(0);
+			}
+			break;
+		case (E_EVENT_TYPE::RIGHT):
+			if (SnakeHead->getVectorX() != -1)
+			{
+				SnakeHead->setVectorY(0);
+				SnakeHead->setVectorX(static_cast<int>(_speed * 1));
+			}
+			break;
+		case (E_EVENT_TYPE::LEFT):
+			if (SnakeHead->getVectorX() != 1)
+			{
+				SnakeHead->setVectorY(0);
+				SnakeHead->setVectorX(static_cast<int>(_speed * -1));
+			}
+			break;
+		default:
+			break;
+	}
+	//Deplacement de la tete du snake et de toutes les autres entites snakes
+
+	std::pair<int, int> tmp(0, 0);
+	tmp = SnakeHead->getPos();
+
+	std::pair<int, int> newPos(SnakeHead->getPos().first + SnakeHead->getVectorX(),
+			SnakeHead->getPos().second + SnakeHead->getVectorY());
+	if (newPos != tmp)
+	{
+		SnakeHead->setPos(newPos);
+
+		for (std::vector<AEntity *>::iterator it = _entities.begin() + 1; it != _entities.end() ; it++)
+		{
+			tmp = changePos(*it, tmp);
+		}
+	}
+}
+#include <unistd.h>
+bool					Game::update(void)
+{
+	Snake	*SnakeHead = dynamic_cast<Snake *>(*(_entities.begin()));
+	Snake	*Tail;
+	Food	*Fruit;
 	if (!SnakeHead)
-		std::cout << "NULL" << std::endl;
+		return false;
 	bool hit = false;
 	for (std::vector<AEntity *>::iterator it = _entities.begin() ; it != _entities.end() ; it++)
 	{
 		if (SnakeHead->hasHit(**it) && !hit) // == la tete a hit un truc
 		{
-			//on a hit un fruit -> passage bool a true et attente de le depasser pour add une case au snake
 			if ((*it)->getType() == E_ENTITIES_TYPE::FOOD)
-				hit = true;
-			// on a hit autre chose (wall ou snake) du coup GAME OVER
-			else
 			{
-				std::cout << "GAME OVER" << std::endl;
-				return ;
+				hit = true;
+				Fruit = dynamic_cast<Food *>(*it);
+				// break == impossible d'avoir un fruit qui 'pop' sur le snake
+				break;
 			}
+			else
+				return false;
 		}
-		//on est 1 tick apres que la queue ait depasse la case fruit
-		//	 -> on add une case au snake a l'endroit ou etait le fruit
-		if (hit && (*it)->getType() == E_ENTITIES_TYPE::FOOD && !SnakeHead->hasHit(**it)) //condition a modifier
-		{
-			//	on change le type de FOOD en SNAKE, la position est deja bonne;
-			//	-> evite de creer une entite SNAKE et delete l'entite FOOD
-			(*it)->setType(E_ENTITIES_TYPE::SNAKE);
-			hit = false;
-		}
+		if ((*it)->getType() == E_ENTITIES_TYPE::SNAKE)
+			Tail = dynamic_cast<Snake *>(*it);
 	}
+	// on change la position du fruit et on ajoute une case au snake
+	if (hit)
+	{
+		std::pair<int, int> newTailPos(Tail->getPos().first + Tail->getVectorX(),
+				Tail->getPos().second + Tail->getVectorY());
+		_entities.push_back(new Snake(newTailPos.first, newTailPos.second));
+		Fruit->setPos(std::rand() % (1380/16), std::rand() % (960/16));
+	}
+	return true;
 }
 
-bool					Game::draw(IRenderer *renderer)
+void					Game::draw(IRenderer *renderer, bool hasLost)
 {
-	if (!(renderer->clearScreen()))
-		return false;
+	renderer->clearScreen();
 	for (std::vector <AEntity *>::iterator it = _entities.begin(); it != _entities.end();
 			it++)
 	{
@@ -103,7 +168,8 @@ bool					Game::draw(IRenderer *renderer)
 			renderer->drawSnake(dynamic_cast<Snake *>(*it));
 		if ((*it)->getType() == E_ENTITIES_TYPE::FOOD)
 			renderer->drawFood(dynamic_cast<Food *>(*it));
+		if (hasLost)
+			renderer->drawGO();
 	}
 	renderer->render();
-	return true;
 }

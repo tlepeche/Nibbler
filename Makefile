@@ -6,7 +6,7 @@
 #    By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/10 14:48:27 by tiboitel          #+#    #+#              #
-#    Updated: 2017/03/06 15:25:35 by tlepeche         ###   ########.fr        #
+#    Updated: 2017/03/07 15:07:30 by tlepeche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ RM = rm -rf
 
 INC = -I includes
 
-CFLAGS = -Wall -Werror -Wextra -std=c++11 -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -std=c++11
+#-fsanitize=address
 
 all: $(NAME) LIB 
 

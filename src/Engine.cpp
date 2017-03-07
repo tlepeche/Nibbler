@@ -6,17 +6,18 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 19:20:28 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/07 17:44:36 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <Engine.hpp>
+#include <unistd.h>
 
 Engine::Engine()
 {
 }
 
-Engine::Engine(char *DLpath)
+Engine::Engine(char *DLpath): _hasLost(false)
 {
 	try
 	{
@@ -90,16 +91,12 @@ bool	Engine::init(void)
 
 void Engine::handleGame(void)
 {
-	std::clock_t 		previous = std::clock();
-	double 				lag = 0;
 	E_EVENT_TYPE		event;
-	bool				running;
-	running = true;
+	bool				running = true;
+	std::clock_t		launch = std::clock();
 	while (running)
 	{
-		std::clock_t	current =  std::clock();
-		double		 	elapsed = current - previous;
-
+		std::clock_t 		start = std::clock();
 		event = _renderer->getLastEvent();
 		if (event == E_EVENT_TYPE::QUIT)
 		{
@@ -107,21 +104,41 @@ void Engine::handleGame(void)
 			_renderer->close();
 			return ;
 		}
-		if (event == E_EVENT_TYPE::LOAD_LIBRARY_ONE)
-			this->setRenderer("sdl/sdl_renderer.so");
-		if (event == E_EVENT_TYPE::LOAD_LIBRARY_TWO)
-			this->setRenderer("ncurses/ncurse_renderer.so");
+		else if (event == E_EVENT_TYPE::LOAD_LIBRARY_ONE)
+		{
+			try
+			{
+				this->setRenderer("sdl/sdl_renderer.so");
+			}
+			catch (std::exception &e)
+			{
+				std::cout << e.what() << std::endl;
+				exit(0);
+			}
+		}
+		else if (event == E_EVENT_TYPE::LOAD_LIBRARY_TWO)
+		{
+			try
+			{
+				this->setRenderer("ncurses/ncurse_renderer.so");
+			}
+			catch (std::exception &e)
+			{
+				std::cout << e.what() << std::endl;
+				exit(0);
+			}
+		}
 		if (this->_isPaused == false && event != E_EVENT_TYPE::RESIZE)
 		{
-			lag += elapsed / (CLOCKS_PER_SEC / 1000);
-			_game->handleInputs(event);
-			while (lag >= MS_PER_UPDATE)
-			{
-				this->_game->update();
-				lag -= MS_PER_UPDATE;
-			}
-			this->_game->draw(this->_renderer);
+			if (!_hasLost)
+				_game->handleInputs(event);
+			this->_game->draw(this->_renderer, _hasLost);
+			if (!(this->_game->update()))
+				_hasLost = true;
 		}
+		std::clock_t	end =  std::clock();
+		std::cout << "LAUNCH - END => " << 1000 *(end - launch)/ CLOCKS_PER_SEC << std::endl;
+		usleep(17000 - (1000 * (end - start) / CLOCKS_PER_SEC));
 	}
 }
 

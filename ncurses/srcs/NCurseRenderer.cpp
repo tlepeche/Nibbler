@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 14:19:45 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/06 19:21:33 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/07 17:29:12 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,28 @@ NCurseRenderer::NCurseRenderer(): _IsCurseInit(false)
 {}
 
 NCurseRenderer::~NCurseRenderer() {}
+
+void	NCurseRenderer::drawLimits() const
+{
+	int i = 0;
+	while (i <= _width + 1)
+	{
+		attron(COLOR_PAIR(1));
+		mvprintw(0, i, "#");
+		mvprintw(_height + 1, i, "#");
+		attroff(COLOR_PAIR(1));
+		i++;
+	}
+	int j = 0;
+	while (j <= _height + 1)
+	{
+		attron(COLOR_PAIR(1));
+		mvprintw(j, 0, "#");
+		mvprintw(j, _width + 1, "#");
+		attroff(COLOR_PAIR(1));
+		j++;
+	}
+}
 
 bool	NCurseRenderer::init(int wind_w, int wind_h)
 {
@@ -37,7 +59,8 @@ bool	NCurseRenderer::init(int wind_w, int wind_h)
 		start_color();
 		init_pair(1, COLOR_WHITE, COLOR_WHITE); //SNAKE
 		init_pair(2, COLOR_YELLOW, COLOR_YELLOW); // FOOD
-		_window = newwin(_width, _height, 0, 0);
+		init_pair(3, COLOR_GREEN, COLOR_GREEN); // FOOD
+		_window = newwin(_width+1, _height+1, 0, 0);
 		_IsCurseInit = true;
 		return true;
 	}
@@ -60,6 +83,15 @@ E_EVENT_TYPE NCurseRenderer::getLastEvent()
 	}
 	switch (ch)
 	{
+		case (49):
+			return (E_EVENT_TYPE::LOAD_LIBRARY_ONE);
+			break;
+		case (50):
+			return (E_EVENT_TYPE::LOAD_LIBRARY_TWO);
+			break;
+		case (51):
+			return (E_EVENT_TYPE::LOAD_LIBRARY_THREE);
+			break;
 		case KEY_UP:
 			return (E_EVENT_TYPE::UP);
 			break;
@@ -72,7 +104,7 @@ E_EVENT_TYPE NCurseRenderer::getLastEvent()
 		case KEY_RIGHT:
 			return (E_EVENT_TYPE::RIGHT);
 			break;
-		case ('q'):
+		case (27):
 			return (E_EVENT_TYPE::QUIT);
 			break;
 		default :
@@ -84,23 +116,27 @@ E_EVENT_TYPE NCurseRenderer::getLastEvent()
 
 void	NCurseRenderer::render() const
 {
+	drawLimits();
 	refresh();
 }
 
 void	NCurseRenderer::drawFood(Food *food) const
 {
-	move(food->getPos().second, food->getPos().first);	
 	attron(COLOR_PAIR(2));
-	printw("#");
+	mvprintw(food->getPos().second + 1, food->getPos().first + 1, "#");
 	attroff(COLOR_PAIR(2));
 }
 
 void	NCurseRenderer::drawSnake(Snake *snake) const
 {
-	move(snake->getPos().second, snake->getPos().first);	
-	attron(COLOR_PAIR(1));
-	printw("#");
-	attroff(COLOR_PAIR(1));
+	attron(COLOR_PAIR(3));
+	mvprintw(snake->getPos().second + 1, snake->getPos().first + 1, "#");
+	attroff(COLOR_PAIR(3));
+}
+
+void	NCurseRenderer::drawGO() const
+{
+	mvprintw(_height / 2, _width / 2 - 4, "GAME OVER");
 }
 
 void	NCurseRenderer::clearScreen() const

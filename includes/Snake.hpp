@@ -11,10 +11,12 @@ class Snake: public virtual AEntity
 		Snake(Snake const & src);
 
 		bool	hasHit(AEntity const & src);
+		void	setVectorX(int x);
+		void	setVectorY(int y);
+		int		getVectorX();
+		int		getVectorY();
 
 	private :
-		int		_speed;
-		int		_velocity;
 		int		_vector_x;
 		int		_vector_y;
 		Snake();

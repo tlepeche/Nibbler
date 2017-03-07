@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:42:42 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 19:23:11 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/07 16:29:09 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ class IRenderer
 		virtual E_EVENT_TYPE	getLastEvent(void) = 0;
 		virtual void			drawSnake(Snake	*snake) const = 0;
 		virtual void			drawFood(Food *food) const = 0;
+		virtual void			drawGO() const = 0;
 		virtual void			render(void) const = 0;
 		virtual void			clearScreen(void) const = 0;
 		virtual bool 			close(void) = 0;

@@ -9,6 +9,20 @@ Snake::Snake(Snake const & src): Snake(src.getPos().first, src.getPos().second)
 Snake::~Snake()
 {}
 
+void	Snake::setVectorX(int x)
+{
+	_vector_x = x;
+}
+
+void	Snake::setVectorY(int y)
+{
+	_vector_y = y;
+}
+
+int		Snake::getVectorX() { return _vector_x; }
+
+int		Snake::getVectorY() { return _vector_y; }
+
 bool	Snake::hasHit(AEntity const & src)
 {
 	if (this == &src)

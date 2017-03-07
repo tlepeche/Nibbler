@@ -3,15 +3,11 @@
 
 #include <iostream>
 
-///////////////
-// PROVISOIR //
-///////////////
 #define X_MIN 0
-#define X_MAX 100
+#define X_MAX 1380/16
 #define Y_MIN 0
-#define Y_MAX 200
+#define Y_MAX 960/16
 
-///////////////
 typedef enum class	eType
 {
 	SNAKE, FOOD
@@ -25,6 +21,7 @@ class AEntity
 		virtual std::pair<int, int>	getPos() const;
 		virtual E_ENTITIES_TYPE		getType() const;
 		virtual void				setPos(std::pair<int, int> pos);
+		virtual void				setPos(int x, int y);
 		virtual void				setType(E_ENTITIES_TYPE type);
 		AEntity						(const AEntity &rhs);
 		virtual AEntity				&operator=(AEntity const &rhs);

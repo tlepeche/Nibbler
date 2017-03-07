@@ -36,3 +36,9 @@ void	AEntity::setPos(std::pair<int, int> pos)
 {
 	_pos = pos;
 }
+
+void	AEntity::setPos(int x, int y)
+{
+	_pos.first = x;
+	_pos.second = y;
+}
