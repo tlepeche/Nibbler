@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:04 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/08 15:40:44 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/08 19:40:26 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,18 @@ void	SDLRenderer::drawSnake(Snake *snake) const
 void	SDLRenderer::drawFood(Food *food) const
 {
 	SDL_SetRenderDrawColor(_renderer, 255, 255, 0, 255);
+	SDL_Rect		r;
+
+	r.x = food->getPos().first * SQUARE_LEN;
+	r.y = food->getPos().second * SQUARE_LEN;
+	r.h = SQUARE_LEN;
+	r.w = SQUARE_LEN;
+	SDL_RenderFillRect(_renderer, &r);
+}
+
+void	SDLRenderer::drawSpecFood(SpecialFood *food) const
+{
+	SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);
 	SDL_Rect		r;
 
 	r.x = food->getPos().first * SQUARE_LEN;

@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:02:07 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/08 16:02:05 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/08 18:30:26 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <Game.hpp>
 #include <Exception.hpp>
 #include <IRenderer.hpp>
+#include <SpecialFood.hpp>
+
 # define MS_PER_UPDATE 1
 
 class Engine

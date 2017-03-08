@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/08 16:59:08 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/08 19:43:49 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,10 @@ void Engine::handleGame(void)
 {
 	E_EVENT_TYPE		event;
 	bool				running = true;
-	double				frameRate = 10;
+	double				frameRate = 30;
 	std::clock_t		deltaTime;
 	std::clock_t		endFrame;
+	SpecialFood			*speFood = NULL;
 
 	//DEBUG
 //	clock_t VERIF = 0;
@@ -103,8 +104,11 @@ void Engine::handleGame(void)
 		
 	//VITESSE AVEC FPS
 //	bool				change = true;
+
 	while (running)
 	{
+		if (std::rand() % 100 == 1 && !speFood && !_hasLost)
+			speFood = _game->addSpecialFood();
 //		std::clock_t TEST = std::clock();
 		std::clock_t startFrame = std::clock();
 		event = _renderer->getLastEvent();
@@ -139,15 +143,16 @@ void Engine::handleGame(void)
 			}
 		}
 
-
-
 		endFrame = std::clock();
 		if (this->_isPaused == false && event != E_EVENT_TYPE::RESIZE)
 		{
 			if (!_hasLost)
+			{
 				_game->handleInputs(event);
+				_game->changePos();
 				if (!(this->_game->update()))
 					_hasLost = true;
+			}
 			this->_game->draw(this->_renderer, _hasLost);
 		}
 		deltaTime = endFrame - startFrame;
@@ -155,7 +160,9 @@ void Engine::handleGame(void)
 		{
 			endFrame = std::clock();
 			deltaTime = endFrame - startFrame;
+			_game->handleInputs(event);
 		}
+
 		// PERMET D'AUGMENTER LES FPS EN FONCTION DU SCORE
 /*		if (_game->getScore() % 400 == 0 && _game->getScore() != 0 && change == true)
 		{
@@ -163,9 +170,9 @@ void Engine::handleGame(void)
 			frameRate *= 2;
 		}
 		else if (_game->getScore() % 400 != 0)
-			change = true;
-*/
-		std::cout << frameRate << std::endl;
+			change = true;*/
+
+
 //		DEBUG
 /*		frames++;
 		VERIF += endFrame- TEST;
@@ -176,6 +183,15 @@ void Engine::handleGame(void)
 			frames = 0;
 			VERIF -= CLOCKS_PER_SEC;
 		}*/
+		if (speFood && !_hasLost)
+		{
+			speFood->setLifeSpan(deltaTime);
+			if (speFood->getLifeSpan() == 0)
+			{
+				_game->eraseEntity(speFood);
+				speFood = NULL;
+			}
+		}
 		deltaTime = 0;
 	}
 }

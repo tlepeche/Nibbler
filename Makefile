@@ -6,7 +6,7 @@
 #    By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/10 14:48:27 by tiboitel          #+#    #+#              #
-#    Updated: 2017/03/07 21:52:47 by tiboitel         ###   ########.fr        #
+#    Updated: 2017/03/08 18:41:10 by tlepeche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRC = main.cpp \
 	  AEntity.cpp \
 	  Engine.cpp \
 	  Food.cpp \
+	  SpecialFood.cpp \
 	  Game.cpp \
 	  Exception.cpp
 

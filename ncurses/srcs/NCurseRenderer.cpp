@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 14:19:45 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/07 21:26:03 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/08 19:41:37 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,10 @@ bool	NCurseRenderer::init(int wind_w, int wind_h)
 		intrflush(stdscr, false); //prevent input queuing
 		timeout(0); //prevent delay reading
 		start_color();
-		init_pair(1, COLOR_WHITE, COLOR_WHITE); //SNAKE
+		init_pair(1, COLOR_WHITE, COLOR_WHITE); //WALL
 		init_pair(2, COLOR_YELLOW, COLOR_YELLOW); // FOOD
-		init_pair(3, COLOR_GREEN, COLOR_GREEN); // FOOD
+		init_pair(3, COLOR_GREEN, COLOR_GREEN); // SNAKE
+		init_pair(4, COLOR_RED, COLOR_RED); // SPECIALFOOD
 		_window = newwin(_width, _height + 1, 0, 0);
 		_IsCurseInit = true;
 		return true;
@@ -126,6 +127,13 @@ void	NCurseRenderer::drawFood(Food *food) const
 	attron(COLOR_PAIR(2));
 	mvprintw(food->getPos().second + 2, food->getPos().first + 1, "#");
 	attroff(COLOR_PAIR(2));
+}
+
+void	NCurseRenderer::drawSpecFood(SpecialFood *food) const
+{
+	attron(COLOR_PAIR(4));
+	mvprintw(food->getPos().second + 2, food->getPos().first + 1, "#");
+	attroff(COLOR_PAIR(4));
 }
 
 void	NCurseRenderer::drawSnake(Snake *snake) const

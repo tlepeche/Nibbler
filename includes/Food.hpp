@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 21:01:19 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/07 21:16:12 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/08 18:41:56 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ class Food : public virtual AEntity
 		Food		&operator=(Food const &rhs);
 		size_t		getScore() const;
 
-	private:
+	protected:
 		Food();
 		size_t		_score;
 };

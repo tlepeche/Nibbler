@@ -1,27 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Food.cpp                                           :+:      :+:    :+:   */
+/*   SpecialFood.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 21:04:15 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/08 19:26:55 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/08 19:30:53 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <Food.hpp>
+#include <SpecialFood.hpp>
 
-Food::Food() {}
-
-Food::Food(int x, int y, size_t score): _score(score)
+SpecialFood::SpecialFood(int x, int y, size_t score, size_t lifespan): Food(x, y, score)
 {
-   	_pos = std::pair<int, int>(x, y);
-	_type = E_ENTITIES_TYPE::FOOD;
+	_type = E_ENTITIES_TYPE::SPECIALFOOD;
+	_lifeSpan = lifespan + std::clock();
+
 }
 
-Food::~Food()
+SpecialFood::~SpecialFood()
 {
 }
 
-size_t	Food::getScore() const { return _score; }
+SpecialFood::SpecialFood(SpecialFood const & rhs)
+{
+	*this = rhs;
+}
+
+SpecialFood	&SpecialFood::operator=(SpecialFood const & rhs)
+{
+	_lifeSpan = rhs.getLifeSpan();
+	return *this;
+}
+
+size_t	SpecialFood::getLifeSpan() const { return _lifeSpan; }
+
+void	SpecialFood::setLifeSpan(size_t val)
+{
+	_lifeSpan -= val > _lifeSpan ? _lifeSpan : val;
+}

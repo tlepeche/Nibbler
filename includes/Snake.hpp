@@ -13,8 +13,8 @@ class Snake: public virtual AEntity
 		bool	hasHit(AEntity const & src);
 		void	setVectorX(int x);
 		void	setVectorY(int y);
-		int		getVectorX();
-		int		getVectorY();
+		int		getVectorX() const;
+		int		getVectorY() const;
 
 	private :
 		int		_vector_x;

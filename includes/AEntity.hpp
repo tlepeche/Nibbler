@@ -10,7 +10,7 @@
 
 typedef enum class	eType
 {
-	SNAKE, FOOD
+	SNAKE, FOOD, SPECIALFOOD
 }					E_ENTITIES_TYPE;
 
 class AEntity

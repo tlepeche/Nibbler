@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:13 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/08 15:38:47 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/08 19:39:54 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ class SDLRenderer : public IRenderer
 		void			clearScreen(void) const;
 		void			drawSnake(Snake *snake) const;
 		void			drawFood(Food *food) const;
+		void			drawSpecFood(SpecialFood *food) const;
 		void			drawGO() const;
 		void			drawScore(size_t score) const;
 		E_EVENT_TYPE	getLastEvent(void);

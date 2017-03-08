@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:42:42 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/07 21:06:21 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/08 19:38:03 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "Snake.hpp"
 #include "Food.hpp"
+#include "SpecialFood.hpp"
 
 typedef enum class	e_event_type
 {
@@ -30,6 +31,7 @@ class IRenderer
 		virtual E_EVENT_TYPE	getLastEvent(void) = 0;
 		virtual void			drawSnake(Snake	*snake) const = 0;
 		virtual void			drawFood(Food *food) const = 0;
+		virtual void			drawSpecFood(SpecialFood *food) const = 0;
 		virtual void			drawScore(size_t score) const = 0;
 		virtual void			drawGO() const = 0;
 		virtual void			render(void) const = 0;

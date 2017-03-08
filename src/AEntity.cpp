@@ -6,6 +6,8 @@ AEntity::AEntity(int x, int y, E_ENTITIES_TYPE type)
 	this->setType(type);
 }
 
+AEntity::AEntity() {}
+
 AEntity::~AEntity()
 {
 }
