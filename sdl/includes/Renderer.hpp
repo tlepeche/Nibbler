@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:13 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 19:21:51 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/08 15:38:47 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "Snake.hpp"
 #include "Food.hpp"
 
+#define SQUARE_LEN 16
 class SDLRenderer : public IRenderer
 {
 	public:
@@ -30,6 +31,8 @@ class SDLRenderer : public IRenderer
 		void			clearScreen(void) const;
 		void			drawSnake(Snake *snake) const;
 		void			drawFood(Food *food) const;
+		void			drawGO() const;
+		void			drawScore(size_t score) const;
 		E_EVENT_TYPE	getLastEvent(void);
 	private:
 		SDL_Window		*_window;

@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/07 22:06:56 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/08 16:59:08 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,18 +91,22 @@ bool	Engine::init(void)
 
 void Engine::handleGame(void)
 {
-	std::clock_t previous = std::clock();
-	double				lag = 0.0;
 	E_EVENT_TYPE		event;
 	bool				running = true;
-	int					frame;
+	double				frameRate = 10;
+	std::clock_t		deltaTime;
+	std::clock_t		endFrame;
 
-	frame = 0;	
+	//DEBUG
+//	clock_t VERIF = 0;
+//	int		frames = 0;
+		
+	//VITESSE AVEC FPS
+//	bool				change = true;
 	while (running)
 	{
-		std::clock_t current = std::clock();
-		double elapsed = (double)(current - previous);
-		lag += elapsed / (CLOCKS_PER_SEC /	1000);
+//		std::clock_t TEST = std::clock();
+		std::clock_t startFrame = std::clock();
 		event = _renderer->getLastEvent();
 		if (event == E_EVENT_TYPE::QUIT)
 		{
@@ -134,20 +138,45 @@ void Engine::handleGame(void)
 				exit(0);
 			}
 		}
+
+
+
+		endFrame = std::clock();
 		if (this->_isPaused == false && event != E_EVENT_TYPE::RESIZE)
 		{
 			if (!_hasLost)
 				_game->handleInputs(event);
-			while (lag >= MS_PER_UPDATE)
-			{
 				if (!(this->_game->update()))
 					_hasLost = true;
-				lag -= MS_PER_UPDATE;
-			}
 			this->_game->draw(this->_renderer, _hasLost);
 		}
-		frame++;
-		std::cout << frame  << std::endl;
+		deltaTime = endFrame - startFrame;
+		while (((deltaTime / (double)CLOCKS_PER_SEC) * 1000.0) < (1000.0 / frameRate))
+		{
+			endFrame = std::clock();
+			deltaTime = endFrame - startFrame;
+		}
+		// PERMET D'AUGMENTER LES FPS EN FONCTION DU SCORE
+/*		if (_game->getScore() % 400 == 0 && _game->getScore() != 0 && change == true)
+		{
+			change = false;
+			frameRate *= 2;
+		}
+		else if (_game->getScore() % 400 != 0)
+			change = true;
+*/
+		std::cout << frameRate << std::endl;
+//		DEBUG
+/*		frames++;
+		VERIF += endFrame- TEST;
+		std::cout << frames << std::endl;
+		std::cout << ((VERIF / (double)CLOCKS_PER_SEC) * 1000.0) << std::endl;
+		if (((VERIF)/CLOCKS_PER_SEC*1000.0) > 1000.0)
+		{
+			frames = 0;
+			VERIF -= CLOCKS_PER_SEC;
+		}*/
+		deltaTime = 0;
 	}
 }
 

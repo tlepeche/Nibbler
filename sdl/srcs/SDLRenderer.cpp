@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:04 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/06 19:22:56 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/08 15:40:44 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ bool SDLRenderer::init(int windw_w, int windw_h)
 		return (false);
 	}
 	_window = SDL_CreateWindow("Nibbler", SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED, windw_w, windw_h, SDL_WINDOW_SHOWN);
+			SDL_WINDOWPOS_CENTERED, windw_w * SQUARE_LEN, windw_h * SQUARE_LEN, SDL_WINDOW_SHOWN);
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED |
 			SDL_RENDERER_PRESENTVSYNC);
 	if (!_renderer)
@@ -36,7 +36,7 @@ bool SDLRenderer::init(int windw_w, int windw_h)
 		std::cerr << SDL_GetError()  << std::endl;
 		return  (false);
 	}
-	_screen = SDL_CreateRGBSurface(0, windw_w, windw_h, 32, 0, 0, 0, 0);
+	_screen = SDL_CreateRGBSurface(0, windw_w * SQUARE_LEN, windw_h * SQUARE_LEN, 32, 0, 0, 0, 0);
 	return (true);
 }
 
@@ -83,10 +83,10 @@ void	SDLRenderer::drawSnake(Snake *snake) const
 	SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
 	SDL_Rect		r;
 
-	r.x = snake->getPos().first * 16;
-	r.y = snake->getPos().second * 16;
-	r.h = 16;
-	r.w = 16;
+	r.x = snake->getPos().first * SQUARE_LEN;
+	r.y = snake->getPos().second * SQUARE_LEN;
+	r.h = SQUARE_LEN;
+	r.w = SQUARE_LEN;
 	SDL_RenderFillRect(_renderer, &r);
 }
 
@@ -95,11 +95,23 @@ void	SDLRenderer::drawFood(Food *food) const
 	SDL_SetRenderDrawColor(_renderer, 255, 255, 0, 255);
 	SDL_Rect		r;
 
-	r.x = food->getPos().first * 16;
-	r.y = food->getPos().second * 16;
-	r.h = 16;
-	r.w = 16;
+	r.x = food->getPos().first * SQUARE_LEN;
+	r.y = food->getPos().second * SQUARE_LEN;
+	r.h = SQUARE_LEN;
+	r.w = SQUARE_LEN;
 	SDL_RenderFillRect(_renderer, &r);
+}
+
+void	SDLRenderer::drawScore(size_t score) const
+{ 	
+	//Pour ecrire text, need SDL_tff;
+	(void)score;
+}
+
+void	SDLRenderer::drawGO() const
+{
+	//Pour ecrire text, need SDL_tff;
+	return;
 }
 
 void	SDLRenderer::clearScreen(void) const

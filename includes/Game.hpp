@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:02:09 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/07 21:05:04 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/08 16:59:31 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ class Game
 	private:
 		std::vector<AEntity *>	_entities;		
 		size_t					_score;
+		std::pair<int, int>		_tmpVector;
 };
 
 #endif
