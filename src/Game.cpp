@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:07:14 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/08 19:41:05 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/13 15:59:26 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,16 @@ std::vector<AEntity *>	Game::getEntities(void) const { return this->_entities; }
 
 size_t					Game::getScore() const { return _score; }
 
+SpecialFood				*Game::getSpeFood() 
+{
+	for (std::vector<AEntity *>::iterator it = _entities.begin(); it != _entities.end() ; it++)
+	{
+		if ((*it)->getType() == E_ENTITIES_TYPE::SPECIALFOOD)
+			return (dynamic_cast<SpecialFood *>(*it));
+	}
+	return NULL;	
+}
+
 void					Game::setScore(size_t score)
 {
 	_score = score;
@@ -59,7 +69,7 @@ void					Game::setScore(size_t score)
 
 SpecialFood					*Game::addSpecialFood()
 {
-	SpecialFood	*SF = new SpecialFood(std::rand() % 86, std::rand() % 60, 1000, 10000);
+	SpecialFood	*SF = new SpecialFood(std::rand() % 86, std::rand() % 60, 1000, 5000000);
 	addEntities(SF);
 	return	SF;
 }
@@ -72,14 +82,12 @@ int						Game::addEntities(AEntity *entity)
 
 void					Game::eraseEntity(AEntity *entity)
 {
-	for (std::vector<AEntity *>::iterator it = _entities.begin() + 1; it != _entities.end() ; it++)
+	for (std::vector<AEntity *>::iterator it = _entities.begin(); it != _entities.end() ; it++)
 	{
 		if (*it == entity)
 		{
-			std::cout << "ERASE" << std::endl;
 			delete (*it);
 			_entities.erase(it);
-			std::cout << "DONE" << std::endl;
 			break;
 		}
 	}
@@ -178,7 +186,10 @@ bool					Game::update(void)
 		std::pair<int, int> newTailPos(Tail->getPos().first + Tail->getVectorX(),
 				Tail->getPos().second + Tail->getVectorY());
 		_entities.push_back(new Snake(newTailPos.first, newTailPos.second));
-		Fruit->setPos(std::rand() % (86), std::rand() % (60));
+		if (Fruit->getType() == E_ENTITIES_TYPE::FOOD)
+			Fruit->setPos(std::rand() % (86), std::rand() % (60));
+		else
+			eraseEntity(Fruit);
 	}
 	return true;
 }

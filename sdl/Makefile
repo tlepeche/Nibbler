@@ -6,7 +6,7 @@
 #    By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/10 14:48:27 by tiboitel          #+#    #+#              #
-#    Updated: 2017/03/06 15:19:49 by tlepeche         ###   ########.fr        #
+#    Updated: 2017/03/13 13:50:42 by tlepeche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ OBJS		=	$(SRCS:%.cpp=$(OBJDIR)%.o)
 all:			$(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) -shared -o $(NAME) $(OBJS) $(CFLAGS) -fPIC $(INCLUDE_C) $(SDL)
+	$(CC) -shared -o $(NAME) $(OBJS) $(CFLAGS) -fPIC $(INCLUDES_C) $(SDL)
 
 $(OBJDIR)%.o: $(SRCSPATH)%.cpp
 	mkdir -p $(OBJDIR)

@@ -6,25 +6,24 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:13 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/13 15:35:31 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/13 11:23:09 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_RENDERER_HPP
 # define FT_RENDERER_HPP
 
-#include <SDL2/SDL.h>
-#include <iostream>
+#include <SFML/Graphics.hpp>
 #include "IRenderer.hpp"
 #include "Snake.hpp"
 #include "Food.hpp"
 
 #define SQUARE_LEN 16
-class SDLRenderer : public IRenderer
+class SFMLRenderer : public IRenderer
 {
 	public:
-		SDLRenderer();
-		~SDLRenderer();
+		SFMLRenderer();
+		~SFMLRenderer();
 		bool 			init(int windw_w, int windw_h);
 		bool 			close(void);
 		void			render(void) const;
@@ -34,22 +33,16 @@ class SDLRenderer : public IRenderer
 		void			drawSpecFood(SpecialFood *food) const;
 		void			drawGO() const;
 		void			drawScore(size_t score) const;
-		void			drawLimits() const;
 		E_EVENT_TYPE	getLastEvent(void);
 	private:
-		SDL_Window		*_window;
-		SDL_Renderer	*_renderer;
-		SDL_Surface		*_screen;
-		SDL_Event		_event;
-		int				_width;
-		int				_height;
+		sf::RenderWindow	*_window;
 };
 
 extern "C"
 {
 	IRenderer	*create_renderer()
 	{
-		return (new SDLRenderer());
+		return (new SFMLRenderer());
 	}
 }
 #endif

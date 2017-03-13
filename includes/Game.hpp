@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:02:09 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/08 19:14:21 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/13 09:24:26 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ class Game
 		Game 					&operator=(Game const &rhs);
 		std::vector<AEntity *>	getEntities() const;
 		size_t					getScore() const;
+		SpecialFood				*getSpeFood();
 		int						addEntities(AEntity *entity);
 		SpecialFood				*addSpecialFood();
 		void					eraseEntity(AEntity *entity);

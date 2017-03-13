@@ -6,17 +6,15 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 21:04:15 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/08 19:30:53 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/13 09:27:51 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <SpecialFood.hpp>
 
-SpecialFood::SpecialFood(int x, int y, size_t score, size_t lifespan): Food(x, y, score)
+SpecialFood::SpecialFood(int x, int y, size_t score, size_t lifespan): Food(x, y, score), _lifeSpan(lifespan)
 {
 	_type = E_ENTITIES_TYPE::SPECIALFOOD;
-	_lifeSpan = lifespan + std::clock();
-
 }
 
 SpecialFood::~SpecialFood()

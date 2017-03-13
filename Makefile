@@ -6,7 +6,7 @@
 #    By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/10 14:48:27 by tiboitel          #+#    #+#              #
-#    Updated: 2017/03/08 18:41:10 by tlepeche         ###   ########.fr        #
+#    Updated: 2017/03/13 11:28:49 by tlepeche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ $(NAME): $(OBJ)
 LIB:
 	make -C ncurses/
 	make -C sdl/
+	make -C SFML/
 
 $(OBJDIR)%.o: $(SRCDIR)%.cpp
 	@mkdir -p $(OBJDIR)
@@ -60,6 +61,7 @@ clean:
 fclean: clean
 	make -C ncurses/ fclean
 	make -C sdl/ fclean
+	make -C SFML/ fclean
 	@$(RM) $(NAME)
 	@echo $(RM_STR) $(NAME)
 

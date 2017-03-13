@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 14:19:45 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/08 19:41:37 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/13 15:36:40 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ bool	NCurseRenderer::init(int wind_w, int wind_h)
 		refresh();
 	else
 	{
-		_width = wind_w + 1;
-		_height = wind_h + 1;
+		_width = wind_w + 2;
+		_height = wind_h + 2;
 		initscr();
 		cbreak(); //allow only one character at a time input
 		noecho(); //stop inputs echoing

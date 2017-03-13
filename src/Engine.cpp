@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/08 19:43:49 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/13 11:50:07 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,9 @@ Engine::Engine()
 {
 }
 
-Engine::Engine(char *DLpath): _hasLost(false)
+Engine::Engine(char *DLpath): _hasLost(false), _handler(NULL)
 {
-	try
-	{
-		this->setRenderer(DLpath);
-	} catch (std::exception &e)
-	{
-		throw(&e);
-	}
+	this->setRenderer(DLpath);
 	this->_game = new Game();
 }
 
@@ -68,10 +62,8 @@ void	Engine::setRenderer(const char *DLpath)
 	}
 	this->_handler = dlopen(DLpath, RTLD_LAZY);
 	if (!this->_handler)
-		throw EngineDlsymException("Unable to dlopen. Error", dlerror(),
-				DLpath);
-	create_renderer = reinterpret_cast<IRenderer * (*)()>(
-			dlsym(this->_handler, "create_renderer"));
+		throw EngineDlsymException("Unable to dlopen. Error", dlerror(), DLpath);
+	create_renderer = reinterpret_cast<IRenderer * (*)()>(dlsym(this->_handler, "create_renderer"));
 	if (!create_renderer)
 		throw EngineDlsymException("Unable to find symbol. Error", dlerror(),
 				DLpath);
@@ -96,20 +88,19 @@ void Engine::handleGame(void)
 	double				frameRate = 30;
 	std::clock_t		deltaTime;
 	std::clock_t		endFrame;
-	SpecialFood			*speFood = NULL;
 
 	//DEBUG
-//	clock_t VERIF = 0;
-//	int		frames = 0;
-		
+	//	clock_t VERIF = 0;
+	//	int		frames = 0;
+
 	//VITESSE AVEC FPS
-//	bool				change = true;
+	//	bool				change = true;
 
 	while (running)
 	{
-		if (std::rand() % 100 == 1 && !speFood && !_hasLost)
-			speFood = _game->addSpecialFood();
-//		std::clock_t TEST = std::clock();
+		if (std::rand() % 100 == 1 && !(_game->getSpeFood()) && !_hasLost)
+			_game->addSpecialFood();
+		//		std::clock_t TEST = std::clock();
 		std::clock_t startFrame = std::clock();
 		event = _renderer->getLastEvent();
 		if (event == E_EVENT_TYPE::QUIT)
@@ -142,6 +133,19 @@ void Engine::handleGame(void)
 				exit(0);
 			}
 		}
+		else if (event == E_EVENT_TYPE::LOAD_LIBRARY_THREE)
+		{
+			try
+			{
+				this->setRenderer("SFML/sfml_renderer.so");
+			}
+			catch (std::exception &e)
+			{
+				std::cout << e.what() << std::endl;
+				exit(0);
+			}
+		}
+
 
 		endFrame = std::clock();
 		if (this->_isPaused == false && event != E_EVENT_TYPE::RESIZE)
@@ -164,33 +168,31 @@ void Engine::handleGame(void)
 		}
 
 		// PERMET D'AUGMENTER LES FPS EN FONCTION DU SCORE
-/*		if (_game->getScore() % 400 == 0 && _game->getScore() != 0 && change == true)
-		{
-			change = false;
-			frameRate *= 2;
-		}
-		else if (_game->getScore() % 400 != 0)
-			change = true;*/
+		/*		if (_game->getScore() % 400 == 0 && _game->getScore() != 0 && change == true)
+				{
+				change = false;
+				frameRate *= 2;
+				}
+				else if (_game->getScore() % 400 != 0)
+				change = true;*/
 
 
-//		DEBUG
-/*		frames++;
-		VERIF += endFrame- TEST;
-		std::cout << frames << std::endl;
-		std::cout << ((VERIF / (double)CLOCKS_PER_SEC) * 1000.0) << std::endl;
-		if (((VERIF)/CLOCKS_PER_SEC*1000.0) > 1000.0)
+		//		DEBUG
+		/*		frames++;
+				VERIF += endFrame- TEST;
+				std::cout << frames << std::endl;
+				std::cout << ((VERIF / (double)CLOCKS_PER_SEC) * 1000.0) << std::endl;
+				if (((VERIF)/CLOCKS_PER_SEC*1000.0) > 1000.0)
+				{
+				frames = 0;
+				VERIF -= CLOCKS_PER_SEC;
+				}*/
+		if (_game->getSpeFood() && !_hasLost)
 		{
-			frames = 0;
-			VERIF -= CLOCKS_PER_SEC;
-		}*/
-		if (speFood && !_hasLost)
-		{
+			SpecialFood	*speFood = _game->getSpeFood();
 			speFood->setLifeSpan(deltaTime);
 			if (speFood->getLifeSpan() == 0)
-			{
 				_game->eraseEntity(speFood);
-				speFood = NULL;
-			}
 		}
 		deltaTime = 0;
 	}
