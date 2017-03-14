@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:13 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/13 11:23:09 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/14 12:27:05 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,16 @@ class SFMLRenderer : public IRenderer
 		void			clearScreen(void) const;
 		void			drawSnake(Snake *snake) const;
 		void			drawFood(Food *food) const;
+		void			drawLimits() const;
 		void			drawSpecFood(SpecialFood *food) const;
 		void			drawGO() const;
 		void			drawScore(size_t score) const;
 		E_EVENT_TYPE	getLastEvent(void);
+
 	private:
 		sf::RenderWindow	*_window;
+		int					_height;
+		int					_width;
 };
 
 extern "C"

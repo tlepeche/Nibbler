@@ -1,8 +1,7 @@
 
 
-NAME = sfml_render.so
-SRCS = SFMLRenderer.cpp\
-	   main.cpp
+NAME = sfml_renderer.so
+SRCS = SFMLRenderer.cpp
 SRCSPATH = ./srcs/
 OBJDIR = obj/
 OBJS = $(SRCS:%.cpp=$(OBJDIR)%.o)
@@ -16,17 +15,16 @@ CFLAGS = -Wall -Wextra -Werror -std=c++11
 
 
 FRAMEWORK_PATH = ./SFML/Frameworks
-FRAMEWORKS = -framework sfml-graphics -framework sfml-window -framework sfml-system
+FRAMEWORKS =  -lsfml-graphics.2.2.0 -lsfml-window -lsfml-system
 
-all: sfml sfmlenv $(NAME)
+all: sfml $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -shared -o $(NAME) $(OBJS) -F $(FRAMEWORK_PATH) $(FRAMEWORKS) $(SFML_INC)
+	$(CC) $(CFLAGS) -shared -o $(NAME) $(OBJS) -Wl,-rpath,$(shell pwd)/SFML/lib -L $(shell pwd)/SFML/lib $(FRAMEWORKS) $(SFML_INC) -fPIC
 
 $(OBJDIR)%.o : $(SRCSPATH)%.cpp
 	mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o  $@ $(INCLUDES_O)
-	-rpath=/home/username/foo 
 
 clean:
 	rm -rf $(OBJDIR)
@@ -38,7 +36,7 @@ re: fclean all
 
 #SFML
 
-SFMLENV = DYLD_FRAMEWORK_PATH="$(shell pwd)/SFML/Frameworks"
+SFMLENV = LD_LIBRARY_PATH="$(shell pwd)/SFML/Frameworks"
 
 run: sfmlenv
 	@DYLD_FRAMEWORK_PATH=`pwd`"/SFML/Frameworks" ./$(NAME) $(PARAM)
@@ -48,7 +46,7 @@ sfmlrem:
 
 sfml:
 	curl -O "http://mirror0.sfml-dev.org/files/SFML-2.2-osx-clang-universal.tar.gz"
-	mkdir SFML
+	mkdir -p SFML
 	tar -xzf SFML-2.2-osx-clang-universal.tar.gz -C SFML --strip-components=1
 	mv SFML/extlibs/freetype.framework SFML/Frameworks/
 	rm -rf "SFML-2.2-osx-clang-universal.tar.gz"

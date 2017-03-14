@@ -6,7 +6,7 @@
 #    By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/10 14:48:27 by tiboitel          #+#    #+#              #
-#    Updated: 2017/03/13 11:28:49 by tlepeche         ###   ########.fr        #
+#    Updated: 2017/03/14 12:18:39 by tlepeche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ INC = -I includes
 CFLAGS = -Wall -Werror -Wextra -std=c++11
 #-fsanitize=address
 
-all: $(NAME) LIB 
+all: $(NAME) lib_sfml lib_curse lib_sdl 
 
 $(NAME): $(OBJ)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
@@ -44,10 +44,14 @@ $(NAME): $(OBJ)
 	@echo $(PX_STR) : $(EX_COLOR)$(NAME)$(NO_COLOR)
 	@echo ""
 
-LIB:
-	make -C ncurses/
-	make -C sdl/
-	make -C SFML/
+lib_sdl:
+	make -C sdl
+
+lib_sfml:
+	make -C SFML
+
+lib_curse:
+	make -C ncurses
 
 $(OBJDIR)%.o: $(SRCDIR)%.cpp
 	@mkdir -p $(OBJDIR)
