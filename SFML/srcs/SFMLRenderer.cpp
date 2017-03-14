@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 10:36:49 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/14 12:34:59 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/14 15:52:29 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	SFMLRenderer::drawSnake(Snake *snake) const
 	sf::RectangleShape rectangle(sf::Vector2f(SQUARE_LEN, SQUARE_LEN));
 
 	rectangle.setFillColor(sf::Color(0, 255, 0));
-	rectangle.setPosition(snake->getPos().first * SQUARE_LEN, snake->getPos().second * SQUARE_LEN);
+	rectangle.setPosition((snake->getPos().first + 1) * SQUARE_LEN, (snake->getPos().second + 1) * SQUARE_LEN);
 	_window->draw(rectangle);
 }
 
@@ -97,7 +97,7 @@ void	SFMLRenderer::drawFood(Food *food) const
 	sf::RectangleShape rectangle(sf::Vector2f(SQUARE_LEN, SQUARE_LEN));
 
 	rectangle.setFillColor(sf::Color(255, 255, 0));
-	rectangle.setPosition(food->getPos().first * SQUARE_LEN, food->getPos().second * SQUARE_LEN);
+	rectangle.setPosition((food->getPos().first + 1) * SQUARE_LEN, (food->getPos().second + 1) * SQUARE_LEN);
 	_window->draw(rectangle);
 }
 
@@ -106,7 +106,7 @@ void	SFMLRenderer::drawSpecFood(SpecialFood *food) const
 	sf::RectangleShape rectangle(sf::Vector2f(SQUARE_LEN, SQUARE_LEN));
 
 	rectangle.setFillColor(sf::Color(255, 0, 0));
-	rectangle.setPosition(food->getPos().first * SQUARE_LEN, food->getPos().second * SQUARE_LEN);
+	rectangle.setPosition((food->getPos().first + 1) * SQUARE_LEN, (food->getPos().second + 1) * SQUARE_LEN);
 	_window->draw(rectangle);
 }
 
@@ -120,7 +120,18 @@ void	SFMLRenderer::drawScore(size_t score) const
 
 void	SFMLRenderer::drawGO() const
 {
-
+	sf::Font font;
+	if (font.loadFromFile("./SFML/sansation.ttf"))
+	{
+		sf::Text text;
+		text.setFont(font);
+		text.setString("GAME OVER");
+		text.setCharacterSize(100); // in pixels, not points!		
+		text.setColor(sf::Color::White);
+		text.setStyle(sf::Text::Bold);
+		text.setPosition((_width * SQUARE_LEN) / 2 - 300, (_height * SQUARE_LEN) / 2 - 50);
+		_window->draw(text);
+	}
 }
 
 void	SFMLRenderer::clearScreen() const
