@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:02:07 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/08 18:30:26 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/17 19:05:10 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ class Engine
 		bool		init(void);
 		void		handleGame(void);
 		void		setRenderer(const char *DLPath);
+		bool		getIsPaused() const;
+		bool		getHasLost() const;
+		Game		*getGame() const;
+		IRenderer	*getRenderer() const;
+		void		*getHandler() const;
+
 	private:
 		Engine();
 		bool		_isPaused;

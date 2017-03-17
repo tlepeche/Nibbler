@@ -6,6 +6,11 @@ AEntity::AEntity(int x, int y, E_ENTITIES_TYPE type)
 	this->setType(type);
 }
 
+AEntity::AEntity(const AEntity &rhs)
+{
+	*this = rhs;
+}
+
 AEntity::AEntity() {}
 
 AEntity::~AEntity()
@@ -14,8 +19,11 @@ AEntity::~AEntity()
 
 AEntity &AEntity::operator=(AEntity const &rhs)
 {
-	this->_pos = rhs.getPos();
-	this->_type = rhs.getType();
+	if (this != &rhs)
+	{
+		this->_pos = rhs.getPos();
+		this->_type = rhs.getType();
+	}
 	return (*this);
 }
 

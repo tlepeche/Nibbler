@@ -3,10 +3,21 @@
 Snake::Snake(int x, int y) : AEntity(x, y, E_ENTITIES_TYPE::SNAKE), _vector_x(0), _vector_y(0)
 {}
 
-Snake::Snake(Snake const & src): Snake(src.getPos().first, src.getPos().second)
+Snake::Snake(Snake const & src)
 {
-	_vector_x = src.getVectorX();
-	_vector_y = src.getVectorY();
+	*this = src;
+}
+
+Snake	&Snake::operator=(const Snake &src)
+{
+	if (this != &src)
+	{
+		_pos = src.getPos();
+		_type = src.getType();
+		_vector_x = src.getVectorX();
+		_vector_y = src.getVectorY();
+	}
+	return *this;
 }
 
 Snake::~Snake()

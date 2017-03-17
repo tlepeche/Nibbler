@@ -9,6 +9,7 @@ class Snake: public virtual AEntity
 		~Snake();
 		Snake(int x, int y);
 		Snake(Snake const & src);
+		Snake	&operator=(const Snake &src);
 
 		bool	hasHit(AEntity const & src);
 		void	setVectorX(int x);

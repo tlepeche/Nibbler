@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 18:31:27 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/04 18:59:58 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/17 19:20:50 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ NibblerException::NibblerException(const std::string &msg) : _error(msg)
 
 NibblerException::NibblerException(NibblerException const &rhs)
 {
-	_error = rhs._error;
+	*this = rhs;
 }
 
 const char *NibblerException::what(void) const throw()
@@ -36,6 +36,11 @@ const char *NibblerException::what(void) const throw()
 
 NibblerException	&NibblerException::operator=(NibblerException const &rhs)
 {
-	_error = rhs._error;
+	if (this != &rhs)
+	{
+		_error = rhs.getError();
+	}
 	return (*this);
 }
+
+std::string		NibblerException::getError() const { return _error; }

@@ -6,7 +6,7 @@
 #    By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/10 14:48:27 by tiboitel          #+#    #+#              #
-#    Updated: 2017/03/14 12:18:39 by tlepeche         ###   ########.fr        #
+#    Updated: 2017/03/17 18:39:05 by tlepeche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ lib_sdl:
 	make -C sdl
 
 lib_sfml:
-	make -C SFML
+	make -C sfml
 
 lib_curse:
 	make -C ncurses
@@ -65,7 +65,7 @@ clean:
 fclean: clean
 	make -C ncurses/ fclean
 	make -C sdl/ fclean
-	make -C SFML/ fclean
+	make -C sfml/ fclean
 	@$(RM) $(NAME)
 	@echo $(RM_STR) $(NAME)
 

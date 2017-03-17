@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 14:19:45 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/13 15:36:40 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/17 18:15:10 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,12 @@ E_EVENT_TYPE NCurseRenderer::getLastEvent()
 	int ch = getch();
 	int x, y;
 	getmaxyx(stdscr, y, x);
-	if (x < _width || y < _height)
+	if (x < _width + 1 || y < _height + 2)
 	{
 		clear();
 		mvprintw(y / 2, x / 2 - 10, "Window is too small to play");
 		mvprintw(y / 2 + 1, x / 2 - 2, "Game paused");
-		mvprintw(y / 2 + 2, x / 2 - 2, "X = %d(min %d), Y= %d(min %d)", x, _width, y, _height);
+		mvprintw(y / 2 + 2, x / 2 - 2, "X = %d(min %d), Y= %d(min %d)", x, _width + 1, y, _height + 2);
 		refresh();
 		return (E_EVENT_TYPE::RESIZE);
 	}

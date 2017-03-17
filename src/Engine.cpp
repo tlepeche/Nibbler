@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/17 16:26:53 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/17 19:07:19 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,36 @@ Engine::Engine()
 
 Engine::Engine(char *DLpath): _hasLost(false), _handler(NULL)
 {
-	this->setRenderer(DLpath);
+	std::string str(DLpath);
+	this->setRenderer("sfml/sfml_renderer.so");
+	if (str.compare("sfml/sfml_renderer.so") != 0)
+		this->setRenderer(DLpath);
 	this->_game = new Game();
 }
 
 Engine::Engine(Engine const &rhs)
 {
-	(void)rhs;
-	// Copy game pointer here.
+	*this = rhs;
 }
 
 Engine &Engine::operator=(Engine const &rhs)
 {
 	if (this != &rhs)
 	{
-		(void)rhs;
-		// Copy game pointer.
+		_isPaused = rhs.getIsPaused();
+		_hasLost = rhs.getHasLost();
+		_game = rhs.getGame();
+		_renderer = rhs.getRenderer();
+		_handler = rhs.getHandler();
 	}
 	return (*this);
 }
+
+bool		Engine::getIsPaused() const { return _isPaused; }
+bool		Engine::getHasLost() const { return _hasLost; }
+Game		*Engine::getGame() const { return _game; }
+IRenderer	*Engine::getRenderer() const { return _renderer; }
+void		*Engine::getHandler() const { return _handler; }
 
 Engine::~Engine()
 {
@@ -143,8 +154,6 @@ void Engine::handleGame(void)
 				exit(0);
 			}
 		}
-
-
 		endFrame = std::clock();
 		if (this->_isPaused == false && event != E_EVENT_TYPE::RESIZE)
 		{

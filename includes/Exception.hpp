@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 18:28:55 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/04 18:57:10 by tiboitel         ###   ########.fr       */
+/*   Updated: 2017/03/17 19:09:09 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,16 @@ class NibblerException : public std::exception
 	public:
 		NibblerException(const char *msg);
 		NibblerException(const std::string &msg);
-		virtual const char	*what(void) const throw();
 		NibblerException(NibblerException const &rhs);
-		virtual ~NibblerException() throw () {};
+
+		virtual				 ~NibblerException() throw () {};
+		virtual const char	*what(void) const throw();
 		NibblerException	&operator=(NibblerException const &rhs);
+		std::string			getError() const;
+
 	protected:
 		std::string			_error;
+
 	private:
 		NibblerException(void);
 };

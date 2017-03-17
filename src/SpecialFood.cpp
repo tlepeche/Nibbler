@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 21:04:15 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/13 09:27:51 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/17 19:21:41 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,13 @@ SpecialFood::SpecialFood(SpecialFood const & rhs)
 
 SpecialFood	&SpecialFood::operator=(SpecialFood const & rhs)
 {
-	_lifeSpan = rhs.getLifeSpan();
+	if (this != &rhs)
+	{
+		_pos = rhs.getPos();
+		_score = rhs.getScore();
+		_type = rhs.getType();
+		_lifeSpan = rhs.getLifeSpan();
+	}
 	return *this;
 }
 

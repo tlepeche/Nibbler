@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:04 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/17 15:14:10 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/17 18:31:52 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,12 @@ bool SDLRenderer::init(int windw_w, int windw_h)
 		return (false);
 	}
 	_window = SDL_CreateWindow("Nibbler", SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED, _width * SQUARE_LEN, _height * SQUARE_LEN, SDL_WINDOW_SHOWN);
+			SDL_WINDOWPOS_CENTERED, _width * SQUARE_LEN, _height * SQUARE_LEN, 0);
+	if (!_window)
+	{
+		std::cerr << SDL_GetError()  << std::endl;
+		return  (false);
+	}
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED |
 			SDL_RENDERER_PRESENTVSYNC);
 	if (!_renderer)
@@ -73,6 +78,18 @@ bool SDLRenderer::init(int windw_w, int windw_h)
 		std::cerr << SDL_GetError()  << std::endl;
 		return  (false);
 	}
+
+	_over = SDL_LoadBMP("./sdl/Game_over.bmp");
+	if (!_over)
+	{
+		std::cout << SDL_GetError() <<std::endl;
+		return false;
+	}
+	uint8_t r, g, b;
+	SDL_GetRGB(1, _over->format, &r, &g, &b);
+	SDL_SetColorKey(_over, SDL_FALSE, SDL_MapRGB(_over->format, r, g, b));
+	_text = SDL_CreateTextureFromSurface(_renderer, _over);
+
 	return (true);
 }
 
@@ -161,19 +178,8 @@ void	SDLRenderer::drawScore(size_t score) const
 
 void	SDLRenderer::drawGO() const
 {
-	SDL_Surface *over = SDL_LoadBMP("./sdl/Game_Over.bmp");
-	if (!over)
-	{
-		std::cout << SDL_GetError() <<std::endl;
-		return ;
-	}
-	uint8_t r, g, b;
-	SDL_GetRGB(1, over->format, &r, &g, &b);
-	SDL_SetColorKey(over, SDL_FALSE, SDL_MapRGB(over->format, r, g, b));
-	SDL_Texture* pTextureZ;
-	pTextureZ= SDL_CreateTextureFromSurface(_renderer, over);
 	SDL_Rect destZ = {SQUARE_LEN, SQUARE_LEN, (_width - 2) * SQUARE_LEN, (_height - 2) * SQUARE_LEN};
-	SDL_RenderCopy(_renderer, pTextureZ, NULL, &destZ);
+	SDL_RenderCopy(_renderer, _text, NULL, &destZ);
 	return;
 }
 
@@ -185,7 +191,10 @@ void	SDLRenderer::clearScreen(void) const
 
 bool SDLRenderer::close()
 {
+	SDL_FreeSurface(_over);
+	SDL_DestroyTexture(_text);
 	SDL_DestroyRenderer(_renderer);
 	SDL_DestroyWindow(_window);
+	SDL_Quit();
 	return (false);
 }

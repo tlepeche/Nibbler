@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:07:14 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/13 15:59:26 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/17 19:19:39 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ Game::Game()
 
 Game::Game(Game const &rhs)
 {
-	this->_entities = rhs.getEntities();
+	*this = rhs;
 }
 
 Game::~Game()
@@ -44,6 +44,7 @@ Game &Game::operator=(Game const &rhs)
 	if (this != &rhs)
 	{
 		this->_entities = rhs.getEntities();
+		this->_score = rhs.getScore();
 	}
 	return (*this);
 }
