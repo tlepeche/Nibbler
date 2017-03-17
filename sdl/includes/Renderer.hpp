@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:13 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/13 15:35:31 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/17 16:11:53 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ class SDLRenderer : public IRenderer
 	private:
 		SDL_Window		*_window;
 		SDL_Renderer	*_renderer;
-		SDL_Surface		*_screen;
 		SDL_Event		_event;
 		int				_width;
 		int				_height;

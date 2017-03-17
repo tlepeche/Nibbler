@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 10:36:49 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/14 15:52:29 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/17 15:05:20 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool SFMLRenderer::init(int windw_w, int windw_h)
 {
 	_height = windw_h + 2;
 	_width = windw_w + 2;
-	_window = new sf::RenderWindow(sf::VideoMode(_width * SQUARE_LEN, _height * SQUARE_LEN), "Snake");
+	_window = new sf::RenderWindow(sf::VideoMode(_width * SQUARE_LEN, _height * SQUARE_LEN), "Snake", sf::Style::Titlebar);
 	return true;
 }
 
@@ -142,5 +142,6 @@ void	SFMLRenderer::clearScreen() const
 bool	SFMLRenderer::close()
 {
 	_window->close();
+	delete _window;
 	return true;
 }

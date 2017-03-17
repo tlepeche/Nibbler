@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/13 11:50:07 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/17 16:26:53 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ void	Engine::setRenderer(const char *DLpath)
 	{
 		this->_renderer->close();
 		if (dlclose(this->_handler) != 0)
-			throw EngineDlsymException("Unable to close handler. Error", dlerror(),
-					DLpath);
+			throw EngineDlsymException("Unable to close handler. Error", dlerror(), DLpath);
 		this->_handler = NULL;
 	}
 	this->_handler = dlopen(DLpath, RTLD_LAZY);
@@ -65,8 +64,7 @@ void	Engine::setRenderer(const char *DLpath)
 		throw EngineDlsymException("Unable to dlopen. Error", dlerror(), DLpath);
 	create_renderer = reinterpret_cast<IRenderer * (*)()>(dlsym(this->_handler, "create_renderer"));
 	if (!create_renderer)
-		throw EngineDlsymException("Unable to find symbol. Error", dlerror(),
-				DLpath);
+		throw EngineDlsymException("Unable to find symbol. Error", dlerror(), DLpath);
 	this->_renderer = create_renderer();
 	if (!this->_renderer->init(1380/16, 960/16))
 		throw NibblerException("Unable to initialize dynamic renderer.");

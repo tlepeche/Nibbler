@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:04 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/13 16:47:02 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/17 15:14:10 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ bool SDLRenderer::init(int windw_w, int windw_h)
 		std::cerr << SDL_GetError()  << std::endl;
 		return  (false);
 	}
-	_screen = SDL_CreateRGBSurface(0, _width * SQUARE_LEN, _height * SQUARE_LEN, 32, 0, 0, 0, 0);
 	return (true);
 }
 
