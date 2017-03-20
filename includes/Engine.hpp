@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:02:07 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/17 19:05:10 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/20 14:58:19 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 class Engine
 {
 	public:	
-		Engine(char *DLpath);
+		Engine(char	*width, char *height);
 		~Engine();
 		Engine		(const Engine &rhs);
 		Engine		&operator=(Engine const &rhs);

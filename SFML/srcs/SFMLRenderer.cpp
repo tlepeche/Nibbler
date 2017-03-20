@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 10:36:49 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/17 19:22:53 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/20 15:49:07 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,28 @@
 SFMLRenderer::SFMLRenderer() {}
 
 SFMLRenderer::~SFMLRenderer() {}
+
+SFMLRenderer::SFMLRenderer(const SFMLRenderer &src)
+{
+	*this= src;
+}
+
+SFMLRenderer	&SFMLRenderer::operator=(const SFMLRenderer &src)
+{
+	if (this != &src)
+	{
+		_window = getWindow();
+		_height = getHeight();
+		_width = getWidth();
+	}
+	return *this;
+}
+
+sf::RenderWindow	*SFMLRenderer::getWindow() const { return _window; }
+
+int					SFMLRenderer::getHeight() const { return _height; }
+
+int					SFMLRenderer::getWidth() const { return _width; }
 
 void	SFMLRenderer::drawLimits() const
 {
@@ -129,10 +151,10 @@ void	SFMLRenderer::drawGO() const
 		sf::Text text;
 		text.setFont(font);
 		text.setString("GAME OVER");
-		text.setCharacterSize(100); // in pixels, not points!		
+		text.setCharacterSize(_width);
 		text.setColor(sf::Color::White);
 		text.setStyle(sf::Text::Bold);
-		text.setPosition((_width * SQUARE_LEN) / 2 - 300, (_height * SQUARE_LEN) / 2 - 50);
+		text.setPosition((_width * SQUARE_LEN) / 2 - (_width * 3), (_height * (SQUARE_LEN - 1)) / 2);
 		_window->draw(text);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:04 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/17 18:31:52 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/20 14:44:10 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,38 @@ SDLRenderer::SDLRenderer()
 SDLRenderer::~SDLRenderer()
 {
 }
+
+SDLRenderer::SDLRenderer(const SDLRenderer &src)
+{
+	*this = src;
+}
+
+SDLRenderer	&SDLRenderer::operator=(const SDLRenderer &src)
+{
+	if (this != &src)
+	{
+		_window = src.getWindow();
+		_renderer = src.getRenderer();
+		_over = src.getOver();
+		_text = src.getText();
+		_width = src.getWidth();
+		_height = src.getHeight();
+	}
+	return *this;
+}
+
+SDL_Window	*SDLRenderer::getWindow() const { return _window; }
+
+SDL_Renderer	*SDLRenderer::getRenderer() const { return _renderer; }
+
+SDL_Surface		*SDLRenderer::getOver() const { return _over; }
+
+SDL_Texture		*SDLRenderer::getText() const { return _text; }
+
+int				SDLRenderer::getWidth() const { return _width; }
+
+int				SDLRenderer::getHeight() const { return _height; }
+
 
 void	SDLRenderer::drawLimits() const
 {
@@ -95,28 +127,29 @@ bool SDLRenderer::init(int windw_w, int windw_h)
 
 E_EVENT_TYPE	SDLRenderer::getLastEvent(void)
 {
-	SDL_PollEvent(&_event);
-	switch (_event.type)
+	SDL_Event	event;
+	SDL_PollEvent(&event);
+	switch (event.type)
 	{
 		case SDL_QUIT:
 			return (E_EVENT_TYPE::QUIT);
 			break;
 		case SDL_KEYDOWN:
-			if (_event.key.keysym.sym == SDLK_UP)
+			if (event.key.keysym.sym == SDLK_UP)
 				return (E_EVENT_TYPE::UP);
-			if (_event.key.keysym.sym == SDLK_DOWN)
+			if (event.key.keysym.sym == SDLK_DOWN)
 				return (E_EVENT_TYPE::DOWN);
-			if (_event.key.keysym.sym == SDLK_LEFT)
+			if (event.key.keysym.sym == SDLK_LEFT)
 				return (E_EVENT_TYPE::LEFT);
-			if (_event.key.keysym.sym == SDLK_RIGHT)
+			if (event.key.keysym.sym == SDLK_RIGHT)
 				return (E_EVENT_TYPE::RIGHT);
-			if (_event.key.keysym.sym == SDLK_ESCAPE)
+			if (event.key.keysym.sym == SDLK_ESCAPE)
 				return (E_EVENT_TYPE::QUIT);
-			if (_event.key.keysym.sym == SDLK_1)
+			if (event.key.keysym.sym == SDLK_1)
 				return (E_EVENT_TYPE::LOAD_LIBRARY_ONE);
-			if (_event.key.keysym.sym == SDLK_2)
+			if (event.key.keysym.sym == SDLK_2)
 				return (E_EVENT_TYPE::LOAD_LIBRARY_TWO);
-			if (_event.key.keysym.sym == SDLK_3)
+			if (event.key.keysym.sym == SDLK_3)
 				return (E_EVENT_TYPE::LOAD_LIBRARY_THREE);
 			break;
 		default:

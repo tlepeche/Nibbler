@@ -6,14 +6,41 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:07:14 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/17 19:19:39 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/20 15:50:00 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <Game.hpp>
+#include <regex>
+#include <string>
 
-Game::Game()
+bool	Game::check(std::string w, std::string h)
 {
+	_width = std::stoul(w);
+	_height = std::stoul(h);
+
+	if (!(std::regex_match(w, std::regex("[0-9]+")) && std::regex_match(w, std::regex("[0-9]+"))))
+		return false;
+	if (_width <= 100 && _height <= 80 && 5 <= _width && 5 <= _height)			
+		return true;
+	return false;
+}
+
+Game::Game(char *width, char *height)
+{
+	std::string w(width);
+	std::string h(height);
+	try
+	{
+	if (!(check(w, h)))
+		throw NibblerException("Can't initiate window, width and height \
+must be positiv numbers (5 < width < 100, 5 < height < 80)");
+	}
+	catch (std::exception)
+	{
+		throw NibblerException("Can't initiate window, width and height \
+must be positiv numbers (5 < width < 100, 5 < height < 80)");
+	}
 }
 
 Game::Game(Game const &rhs)
@@ -30,28 +57,33 @@ void	Game::init(void)
 	_score = 0;
 	std::srand(time(NULL));
 	_entities.clear();
-	//snake pop au milieu de lecran (cf consigne)
-	_entities.push_back(new Snake(43, 30));
-	_entities.push_back(new Snake(43 - 1, 30));
-	_entities.push_back(new Snake(43 - 2, 30));
-	_entities.push_back(new Snake(43 - 3, 30));
-	_entities.push_back(new Food(4, 7));
-	dynamic_cast<Snake *>((*_entities.begin()))->setVectorY(1);
+	_entities.push_back(new Snake(_width / 2, _height / 2));
+	_entities.push_back(new Snake(_width / 2 - 1, _height / 2));
+	_entities.push_back(new Snake(_width / 2 - 2, _height / 2));
+	_entities.push_back(new Snake(_width / 2 - 3, _height / 2));
+	_entities.push_back(new Food(4, 4));
+	dynamic_cast<Snake *>((*_entities.begin()))->setVectorX(1);
 }
 
 Game &Game::operator=(Game const &rhs)
 {
 	if (this != &rhs)
 	{
-		this->_entities = rhs.getEntities();
-		this->_score = rhs.getScore();
+		_entities = rhs.getEntities();
+		_score = rhs.getScore();
+		_width = rhs.getWidth();
+		_height = rhs.getHeight(); 
 	}
 	return (*this);
 }
 
-std::vector<AEntity *>	Game::getEntities(void) const { return this->_entities; }
+std::vector<AEntity *>	Game::getEntities(void) const { return _entities; }
 
 size_t					Game::getScore() const { return _score; }
+
+int					Game::getWidth() const { return _width; }
+
+int					Game::getHeight() const { return _height; }
 
 SpecialFood				*Game::getSpeFood() 
 {
@@ -70,7 +102,7 @@ void					Game::setScore(size_t score)
 
 SpecialFood					*Game::addSpecialFood()
 {
-	SpecialFood	*SF = new SpecialFood(std::rand() % 86, std::rand() % 60, 1000, 5000000);
+	SpecialFood	*SF = new SpecialFood(std::rand() % _width, std::rand() % _height, 1000, 5000000);
 	addEntities(SF);
 	return	SF;
 }
@@ -154,20 +186,24 @@ void					Game::handleInputs(E_EVENT_TYPE &event)
 	}
 }
 
+bool	Game::hasHit(AEntity & head, AEntity & src)
+{
+	if (&head == &src)
+		return false;
+	if (head.getPos().first <= 0 || head.getPos().first >= _width ||
+			head.getPos().second <= 0 || head.getPos().second >= _height)
+		return true;
+	return (head.getPos() == src.getPos());
+}
+
 bool					Game::update(void)
 {
-	Snake	*SnakeHead = dynamic_cast<Snake *>(*(_entities.begin()));
 	Snake	*Tail;
 	Food	*Fruit;
-	if (!SnakeHead)
-	{
-		std::cout << "SNAKEHEAD" << std::endl;
-		return false;
-	}
 	bool hit = false;
 	for (std::vector<AEntity *>::iterator it = _entities.begin(); it != _entities.end() ; it++)
 	{
-		if (SnakeHead->hasHit(**it)) // == la tete a hit un truc
+		if (hasHit(**(_entities.begin()), **it))
 		{
 			if ((*it)->getType() == E_ENTITIES_TYPE::FOOD || (*it)->getType() == E_ENTITIES_TYPE::SPECIALFOOD)
 			{
@@ -181,14 +217,13 @@ bool					Game::update(void)
 		if ((*it)->getType() == E_ENTITIES_TYPE::SNAKE)
 			Tail = dynamic_cast<Snake *>(*it);
 	}
-	// on change la position du fruit et on ajoute une case au snake
 	if (hit)
 	{
 		std::pair<int, int> newTailPos(Tail->getPos().first + Tail->getVectorX(),
 				Tail->getPos().second + Tail->getVectorY());
 		_entities.push_back(new Snake(newTailPos.first, newTailPos.second));
 		if (Fruit->getType() == E_ENTITIES_TYPE::FOOD)
-			Fruit->setPos(std::rand() % (86), std::rand() % (60));
+			Fruit->setPos(std::rand() % _width, std::rand() % _height);
 		else
 			eraseEntity(Fruit);
 	}

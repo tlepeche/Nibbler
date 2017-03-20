@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:02:09 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/13 09:24:26 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/20 15:39:07 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,19 @@ class Game
 	public:
 		Game();
 		~Game();
+		Game(char *w, char *h);
 		void					init();
+		bool					check(std::string w, std::string h);
 		Game					(const Game &rhs);
 		Game 					&operator=(Game const &rhs);
+
 		std::vector<AEntity *>	getEntities() const;
 		size_t					getScore() const;
+		int					getWidth() const;
+		int					getHeight() const;
 		SpecialFood				*getSpeFood();
+
+		bool					hasHit(AEntity &Head, AEntity &src);
 		int						addEntities(AEntity *entity);
 		SpecialFood				*addSpecialFood();
 		void					eraseEntity(AEntity *entity);
@@ -45,6 +52,8 @@ class Game
 	private:
 		std::vector<AEntity *>	_entities;		
 		size_t					_score;
+		int					_width;
+		int					_height;
 };
 
 #endif

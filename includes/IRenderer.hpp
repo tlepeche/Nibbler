@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:42:42 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/08 19:38:03 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/20 14:30:33 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ class IRenderer
 		virtual void			render(void) const = 0;
 		virtual void			clearScreen(void) const = 0;
 		virtual bool 			close(void) = 0;
-
-	private:
 };
 
 #endif

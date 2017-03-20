@@ -36,13 +36,3 @@ void	Snake::setVectorY(int y)
 int		Snake::getVectorX() const { return _vector_x; }
 
 int		Snake::getVectorY() const { return _vector_y; }
-
-bool	Snake::hasHit(AEntity const & src)
-{
-	if (this == &src)
-		return false;
-	if (getPos().first <= X_MIN || getPos().first >= X_MAX ||
-			getPos().second <= Y_MIN || getPos().second >= Y_MAX)
-		return true;
-	return (getPos() == src.getPos());
-}

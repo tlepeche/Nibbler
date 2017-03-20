@@ -2,11 +2,14 @@
 
 int main(int ac, char **av)
 {
-	if (ac != 2)
+	if (ac != 3)
+	{
+		std::cout << "Usage: ./Nibbler [width] [height]" << std::endl;
 		return (-1);
+	}
 	try
 	{
-		Engine		engine(av[1]);
+		Engine		engine(av[1], av[2]);
 		engine.init();
 	}
    	catch (std::exception &e)

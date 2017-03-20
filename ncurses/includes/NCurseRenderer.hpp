@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 14:23:38 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/08 19:38:28 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/20 14:37:06 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@ class NCurseRenderer : public IRenderer
 	public :
 		NCurseRenderer();
 		~NCurseRenderer(); 
+		NCurseRenderer(const NCurseRenderer &src);
+		NCurseRenderer	&operator=(const NCurseRenderer &src);
+
+		WINDOW			*getWindow() const;
+		bool			getIsInit() const;
+		int				getHeight() const;
+		int				getWidth() const;
+
 		bool			init(int wind_w, int wind_h);
 		E_EVENT_TYPE	getLastEvent();
 		void			drawSnake(Snake *snake) const;
@@ -40,7 +48,7 @@ class NCurseRenderer : public IRenderer
 
 	private:
 		WINDOW			*_window;
-		bool			_IsCurseInit;
+		bool			_isCurseInit;
 		int				_height;
 		int				_width;
 

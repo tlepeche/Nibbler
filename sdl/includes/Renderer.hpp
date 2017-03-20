@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:13 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/17 18:10:31 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/20 14:22:26 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ class SDLRenderer : public IRenderer
 	public:
 		SDLRenderer();
 		~SDLRenderer();
+		SDLRenderer(const SDLRenderer &src);
+		SDLRenderer		&operator=(const SDLRenderer &src);
 		bool 			init(int windw_w, int windw_h);
 		bool 			close(void);
 		void			render(void) const;
@@ -36,10 +38,19 @@ class SDLRenderer : public IRenderer
 		void			drawScore(size_t score) const;
 		void			drawLimits() const;
 		E_EVENT_TYPE	getLastEvent(void);
+
+		SDL_Window		*getWindow() const;
+		SDL_Renderer	*getRenderer() const;
+		SDL_Surface		*getOver() const;
+		SDL_Texture		*getText() const;
+		int				getWidth() const;
+		int				getHeight() const;
+
+			
+
 	private:
 		SDL_Window		*_window;
 		SDL_Renderer	*_renderer;
-		SDL_Event		_event;
 		SDL_Surface		*_over;
 		SDL_Texture		*_text;
 		int				_width;

@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 14:19:45 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/17 18:15:10 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/20 14:37:53 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,35 @@
 #include <NCurseRenderer.hpp>
 #include <sstream>
 
-NCurseRenderer::NCurseRenderer(): _IsCurseInit(false)
+NCurseRenderer::NCurseRenderer(): _isCurseInit(false)
 {}
 
 NCurseRenderer::~NCurseRenderer() {}
+
+NCurseRenderer::NCurseRenderer(const NCurseRenderer &src)
+{
+	*this = src;
+}
+
+NCurseRenderer	&NCurseRenderer::operator=(const NCurseRenderer &src)
+{
+	if (this != &src)
+	{
+		_window = src.getWindow();
+		_isCurseInit = src.getIsInit();
+		_height = src.getHeight();
+		_width = src.getWidth();
+	}
+	return *this;
+}
+
+WINDOW			*NCurseRenderer::getWindow() const { return _window; }
+
+bool			NCurseRenderer::getIsInit() const { return _isCurseInit; }
+
+int				NCurseRenderer::getHeight() const { return _height; }
+
+int				NCurseRenderer::getWidth() const { return _width; }
 
 void	NCurseRenderer::drawLimits() const
 {
@@ -43,7 +68,7 @@ void	NCurseRenderer::drawLimits() const
 
 bool	NCurseRenderer::init(int wind_w, int wind_h)
 {
-	if (_IsCurseInit)
+	if (_isCurseInit)
 		refresh();
 	else
 	{
@@ -63,7 +88,7 @@ bool	NCurseRenderer::init(int wind_w, int wind_h)
 		init_pair(3, COLOR_GREEN, COLOR_GREEN); // SNAKE
 		init_pair(4, COLOR_RED, COLOR_RED); // SPECIALFOOD
 		_window = newwin(_width, _height + 1, 0, 0);
-		_IsCurseInit = true;
+		_isCurseInit = true;
 		return true;
 	}
 	return false;
@@ -163,9 +188,9 @@ void	NCurseRenderer::clearScreen() const
 
 bool	NCurseRenderer::close()
 {
-	if (!isendwin() && _IsCurseInit)
+	if (!isendwin() && _isCurseInit)
 	{
-		_IsCurseInit = false;
+		_isCurseInit = false;
 		endwin();
 		return true;
 	}

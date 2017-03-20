@@ -3,11 +3,6 @@
 
 #include <iostream>
 
-#define X_MIN 0
-#define X_MAX 1380/16
-#define Y_MIN 0
-#define Y_MAX 960/16
-
 typedef enum class	eType
 {
 	SNAKE, FOOD, SPECIALFOOD

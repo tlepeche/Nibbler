@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/17 19:07:19 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/20 15:30:38 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,10 @@ Engine::Engine()
 {
 }
 
-Engine::Engine(char *DLpath): _hasLost(false), _handler(NULL)
+Engine::Engine(char *width, char *height): _hasLost(false), _handler(NULL)
 {
-	std::string str(DLpath);
-	this->setRenderer("sfml/sfml_renderer.so");
-	if (str.compare("sfml/sfml_renderer.so") != 0)
-		this->setRenderer(DLpath);
-	this->_game = new Game();
+	_game = new Game(width, height);
+	setRenderer("sfml/sfml_renderer.so");
 }
 
 Engine::Engine(Engine const &rhs)
@@ -53,7 +50,7 @@ void		*Engine::getHandler() const { return _handler; }
 Engine::~Engine()
 {
 	delete _renderer;
-	if (dlclose(this->_handler) != 0)
+	if (dlclose(_handler) != 0)
 		throw NibblerException("Unable to close handler.");
 	delete _game;
 }
@@ -62,31 +59,31 @@ void	Engine::setRenderer(const char *DLpath)
 {
 	IRenderer		*(*create_renderer)();
 
-	this->_isPaused = true;
-	if (this->_handler != NULL)
+	_isPaused = true;
+	if (_handler != NULL)
 	{
-		this->_renderer->close();
-		if (dlclose(this->_handler) != 0)
+		_renderer->close();
+		if (dlclose(_handler) != 0)
 			throw EngineDlsymException("Unable to close handler. Error", dlerror(), DLpath);
-		this->_handler = NULL;
+		_handler = NULL;
 	}
-	this->_handler = dlopen(DLpath, RTLD_LAZY);
-	if (!this->_handler)
+	_handler = dlopen(DLpath, RTLD_LAZY);
+	if (!_handler)
 		throw EngineDlsymException("Unable to dlopen. Error", dlerror(), DLpath);
-	create_renderer = reinterpret_cast<IRenderer * (*)()>(dlsym(this->_handler, "create_renderer"));
+	create_renderer = reinterpret_cast<IRenderer * (*)()>(dlsym(_handler, "create_renderer"));
 	if (!create_renderer)
 		throw EngineDlsymException("Unable to find symbol. Error", dlerror(), DLpath);
-	this->_renderer = create_renderer();
-	if (!this->_renderer->init(1380/16, 960/16))
+	_renderer = create_renderer();
+	if (!_renderer->init(_game->getWidth(), _game->getHeight()))
 		throw NibblerException("Unable to initialize dynamic renderer.");
-	this->_isPaused = false;
+	_isPaused = false;
 }
 
 bool	Engine::init(void)
 {
-	this->_game->init();
+	_game->init();
 	_isPaused = false;
-	this->handleGame();
+	handleGame();
 	return (true);
 }
 
@@ -122,7 +119,7 @@ void Engine::handleGame(void)
 		{
 			try
 			{
-				this->setRenderer("sdl/sdl_renderer.so");
+				setRenderer("sdl/sdl_renderer.so");
 			}
 			catch (std::exception &e)
 			{
@@ -134,7 +131,7 @@ void Engine::handleGame(void)
 		{
 			try
 			{
-				this->setRenderer("ncurses/ncurse_renderer.so");
+				setRenderer("ncurses/ncurse_renderer.so");
 			}
 			catch (std::exception &e)
 			{
@@ -146,7 +143,7 @@ void Engine::handleGame(void)
 		{
 			try
 			{
-				this->setRenderer("SFML/sfml_renderer.so");
+				setRenderer("SFML/sfml_renderer.so");
 			}
 			catch (std::exception &e)
 			{
@@ -155,16 +152,16 @@ void Engine::handleGame(void)
 			}
 		}
 		endFrame = std::clock();
-		if (this->_isPaused == false && event != E_EVENT_TYPE::RESIZE)
+		if (_isPaused == false && event != E_EVENT_TYPE::RESIZE)
 		{
 			if (!_hasLost)
 			{
 				_game->handleInputs(event);
 				_game->changePos();
-				if (!(this->_game->update()))
+				if (!(_game->update()))
 					_hasLost = true;
 			}
-			this->_game->draw(this->_renderer, _hasLost);
+			_game->draw(_renderer, _hasLost);
 		}
 		deltaTime = endFrame - startFrame;
 		while (((deltaTime / (double)CLOCKS_PER_SEC) * 1000.0) < (1000.0 / frameRate))
@@ -210,10 +207,10 @@ EngineDlsymException::EngineDlsymException(const char *msg, const char *dlerror,
 	std::stringstream	ss;
 
 	ss << msg << ": " << dlerror << " on dylib includes : " << library_path;
-	this->_error = ss.str();
+	_error = ss.str();
 }
 
 const char *EngineDlsymException::what(void) const throw()
 {
-	return (this->_error.c_str());
+	return (_error.c_str());
 }
