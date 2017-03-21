@@ -6,7 +6,7 @@
 #    By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/10 14:48:27 by tiboitel          #+#    #+#              #
-#    Updated: 2017/03/21 15:40:48 by tlepeche         ###   ########.fr        #
+#    Updated: 2017/03/21 20:34:53 by tlepeche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ fclean:	clean
 re: fclean all
 
 sdl2:
-	@if [ ! "~/.brew/bin/sdl2-config" ]; then \
+	@if [ ! -e "$(HOME)/.brew/bin/sdl2-config" ]; then \
 	brew install sdl2; \
 	fi
 
