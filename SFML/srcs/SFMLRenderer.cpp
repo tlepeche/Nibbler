@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 10:36:49 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/20 15:49:07 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/21 16:54:20 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ E_EVENT_TYPE	SFMLRenderer::getLastEvent()
 					return E_EVENT_TYPE::LEFT;
 				if (event.key.code == sf::Keyboard::Right)
 					return E_EVENT_TYPE::RIGHT;
+				if (event.key.code == sf::Keyboard::Space)
+					return E_EVENT_TYPE::SPACE;
 				if (event.key.code == sf::Keyboard::Num1)
 					return E_EVENT_TYPE::LOAD_LIBRARY_ONE;
 				if (event.key.code == sf::Keyboard::Num2)
@@ -113,6 +115,15 @@ void	SFMLRenderer::drawSnake(Snake *snake) const
 	sf::RectangleShape rectangle(sf::Vector2f(SQUARE_LEN, SQUARE_LEN));
 
 	rectangle.setFillColor(sf::Color(0, 255, 0));
+	rectangle.setPosition((snake->getPos().first + 1) * SQUARE_LEN, (snake->getPos().second + 1) * SQUARE_LEN);
+	_window->draw(rectangle);
+}
+
+void	SFMLRenderer::drawSnakeHead(Snake *snake) const
+{
+	sf::RectangleShape rectangle(sf::Vector2f(SQUARE_LEN, SQUARE_LEN));
+
+	rectangle.setFillColor(sf::Color(255, 0, 255));
 	rectangle.setPosition((snake->getPos().first + 1) * SQUARE_LEN, (snake->getPos().second + 1) * SQUARE_LEN);
 	_window->draw(rectangle);
 }

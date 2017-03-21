@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 14:19:45 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/20 14:37:53 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/21 16:43:25 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,23 @@ int				NCurseRenderer::getHeight() const { return _height; }
 
 int				NCurseRenderer::getWidth() const { return _width; }
 
-void	NCurseRenderer::drawLimits() const
+void			NCurseRenderer::drawLimits() const
 {
 	int i = 0;
-	while (i <= _width)
+	while (i < _width)
 	{
 		attron(COLOR_PAIR(1));
 		mvprintw(1, i, "#");
-		mvprintw(_height + 1, i, "#");
+		mvprintw(_height, i, "#");
 		attroff(COLOR_PAIR(1));
 		i++;
 	}
 	int j = 1;
-	while (j <= _height + 1)
+	while (j < _height + 1)
 	{
 		attron(COLOR_PAIR(1));
 		mvprintw(j, 0, "#");
-		mvprintw(j, _width, "#");
+		mvprintw(j, _width - 1, "#");
 		attroff(COLOR_PAIR(1));
 		j++;
 	}
@@ -87,6 +87,7 @@ bool	NCurseRenderer::init(int wind_w, int wind_h)
 		init_pair(2, COLOR_YELLOW, COLOR_YELLOW); // FOOD
 		init_pair(3, COLOR_GREEN, COLOR_GREEN); // SNAKE
 		init_pair(4, COLOR_RED, COLOR_RED); // SPECIALFOOD
+		init_pair(5, COLOR_MAGENTA, COLOR_MAGENTA); // SPECIALFOOD
 		_window = newwin(_width, _height + 1, 0, 0);
 		_isCurseInit = true;
 		return true;
@@ -134,6 +135,9 @@ E_EVENT_TYPE NCurseRenderer::getLastEvent()
 		case (27):
 			return (E_EVENT_TYPE::QUIT);
 			break;
+		case (' '):
+			return (E_EVENT_TYPE::SPACE);
+			break;
 		default :
 			return (E_EVENT_TYPE::UNKNOWN);
 			break;
@@ -166,6 +170,13 @@ void	NCurseRenderer::drawSnake(Snake *snake) const
 	attron(COLOR_PAIR(3));
 	mvprintw(snake->getPos().second + 2, snake->getPos().first + 1, "#");
 	attroff(COLOR_PAIR(3));
+}
+
+void	NCurseRenderer::drawSnakeHead(Snake *snake) const
+{
+	attron(COLOR_PAIR(5));
+	mvprintw(snake->getPos().second + 2, snake->getPos().first + 1, "#");
+	attroff(COLOR_PAIR(5));
 }
 
 void	NCurseRenderer::drawScore(size_t score) const

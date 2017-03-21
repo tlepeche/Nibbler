@@ -6,7 +6,7 @@
 #    By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/10 14:48:27 by tiboitel          #+#    #+#              #
-#    Updated: 2017/03/17 18:39:05 by tlepeche         ###   ########.fr        #
+#    Updated: 2017/03/21 15:39:13 by tlepeche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,6 @@ RM = rm -rf
 INC = -I includes
 
 CFLAGS = -Wall -Werror -Wextra -std=c++11
-#-fsanitize=address
 
 all: $(NAME) lib_sfml lib_curse lib_sdl 
 

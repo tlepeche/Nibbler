@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:02:09 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/20 15:39:07 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/21 17:16:16 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,10 @@ class Game
 
 		std::vector<AEntity *>	getEntities() const;
 		size_t					getScore() const;
-		int					getWidth() const;
-		int					getHeight() const;
+		int						getWidth() const;
+		int						getHeight() const;
 		SpecialFood				*getSpeFood();
+		bool					getHasEaten() const;
 
 		bool					hasHit(AEntity &Head, AEntity &src);
 		int						addEntities(AEntity *entity);
@@ -45,6 +46,7 @@ class Game
 		bool					update(void);
 		void					draw(IRenderer *renderer, bool hasLost);
 
+		void					addSquare();
 		void					changePos();
 		void					handleInputs(E_EVENT_TYPE &event);
 		void					setScore(size_t score);
@@ -52,8 +54,10 @@ class Game
 	private:
 		std::vector<AEntity *>	_entities;		
 		size_t					_score;
-		int					_width;
-		int					_height;
+		int						_width;
+		int						_height;
+		bool					_hasEaten;
+		std::pair<int, int>		_TailPos;
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 14:23:38 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/20 14:37:06 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/21 15:46:14 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class NCurseRenderer : public IRenderer
 		bool			init(int wind_w, int wind_h);
 		E_EVENT_TYPE	getLastEvent();
 		void			drawSnake(Snake *snake) const;
+		void			drawSnakeHead(Snake	*snake) const;
 		void			drawFood(Food *food) const;
 		void			drawSpecFood(SpecialFood *food) const;
 		void			drawScore(size_t score) const;

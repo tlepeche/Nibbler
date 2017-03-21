@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/20 15:30:38 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/21 17:33:04 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ Engine::Engine()
 {
 }
 
-Engine::Engine(char *width, char *height): _hasLost(false), _handler(NULL)
+Engine::Engine(char *width, char *height, bool debug): _hasLost(false), _handler(NULL), _debug(debug)
 {
 	_game = new Game(width, height);
 	setRenderer("sfml/sfml_renderer.so");
@@ -43,6 +43,7 @@ Engine &Engine::operator=(Engine const &rhs)
 
 bool		Engine::getIsPaused() const { return _isPaused; }
 bool		Engine::getHasLost() const { return _hasLost; }
+bool		Engine::getDebug() const { return _debug; }
 Game		*Engine::getGame() const { return _game; }
 IRenderer	*Engine::getRenderer() const { return _renderer; }
 void		*Engine::getHandler() const { return _handler; }
@@ -87,80 +88,76 @@ bool	Engine::init(void)
 	return (true);
 }
 
+void	Engine::handleLibChange(E_EVENT_TYPE const &event)
+{
+	if (event == E_EVENT_TYPE::LOAD_LIBRARY_ONE)
+	{
+		try
+		{
+			setRenderer("sdl/sdl_renderer.so");
+		}
+		catch (std::exception &e)
+		{
+			std::cout << e.what() << std::endl;
+			exit(0);
+		}
+	}
+	else if (event == E_EVENT_TYPE::LOAD_LIBRARY_TWO)
+	{
+		try
+		{
+			setRenderer("ncurses/ncurse_renderer.so");
+		}
+		catch (std::exception &e)
+		{
+			std::cout << e.what() << std::endl;
+			exit(0);
+		}
+	}
+	else if (event == E_EVENT_TYPE::LOAD_LIBRARY_THREE)
+	{
+		try
+		{
+			setRenderer("SFML/sfml_renderer.so");
+		}
+		catch (std::exception &e)
+		{
+			std::cout << e.what() << std::endl;
+			exit(0);
+		}
+	}
+}
+
 void Engine::handleGame(void)
 {
 	E_EVENT_TYPE		event;
-	bool				running = true;
-	double				frameRate = 30;
+	double				frameRate;
 	std::clock_t		deltaTime;
 	std::clock_t		endFrame;
 
-	//DEBUG
-	//	clock_t VERIF = 0;
-	//	int		frames = 0;
-
-	//VITESSE AVEC FPS
-	//	bool				change = true;
-
-	while (running)
+	while (true)
 	{
+		frameRate = 10;
 		if (std::rand() % 100 == 1 && !(_game->getSpeFood()) && !_hasLost)
 			_game->addSpecialFood();
-		//		std::clock_t TEST = std::clock();
 		std::clock_t startFrame = std::clock();
 		event = _renderer->getLastEvent();
 		if (event == E_EVENT_TYPE::QUIT)
 		{
-			running = false;
 			_renderer->close();
 			return ;
 		}
-		else if (event == E_EVENT_TYPE::LOAD_LIBRARY_ONE)
-		{
-			try
-			{
-				setRenderer("sdl/sdl_renderer.so");
-			}
-			catch (std::exception &e)
-			{
-				std::cout << e.what() << std::endl;
-				exit(0);
-			}
-		}
-		else if (event == E_EVENT_TYPE::LOAD_LIBRARY_TWO)
-		{
-			try
-			{
-				setRenderer("ncurses/ncurse_renderer.so");
-			}
-			catch (std::exception &e)
-			{
-				std::cout << e.what() << std::endl;
-				exit(0);
-			}
-		}
-		else if (event == E_EVENT_TYPE::LOAD_LIBRARY_THREE)
-		{
-			try
-			{
-				setRenderer("SFML/sfml_renderer.so");
-			}
-			catch (std::exception &e)
-			{
-				std::cout << e.what() << std::endl;
-				exit(0);
-			}
-		}
+		else if (event == E_EVENT_TYPE::SPACE && _debug)
+			_game->addSquare();
+		handleLibChange(event);
 		endFrame = std::clock();
 		if (_isPaused == false && event != E_EVENT_TYPE::RESIZE)
 		{
+			_game->handleInputs(event);
+			if (!_hasLost && !(_game->update()))
+				_hasLost = true;
 			if (!_hasLost)
-			{
-				_game->handleInputs(event);
 				_game->changePos();
-				if (!(_game->update()))
-					_hasLost = true;
-			}
 			_game->draw(_renderer, _hasLost);
 		}
 		deltaTime = endFrame - startFrame;
@@ -168,37 +165,18 @@ void Engine::handleGame(void)
 		{
 			endFrame = std::clock();
 			deltaTime = endFrame - startFrame;
-			_game->handleInputs(event);
 		}
 
-		// PERMET D'AUGMENTER LES FPS EN FONCTION DU SCORE
-		/*		if (_game->getScore() % 400 == 0 && _game->getScore() != 0 && change == true)
-				{
-				change = false;
-				frameRate *= 2;
-				}
-				else if (_game->getScore() % 400 != 0)
-				change = true;*/
-
-
-		//		DEBUG
-		/*		frames++;
-				VERIF += endFrame- TEST;
-				std::cout << frames << std::endl;
-				std::cout << ((VERIF / (double)CLOCKS_PER_SEC) * 1000.0) << std::endl;
-				if (((VERIF)/CLOCKS_PER_SEC*1000.0) > 1000.0)
-				{
-				frames = 0;
-				VERIF -= CLOCKS_PER_SEC;
-				}*/
-		if (_game->getSpeFood() && !_hasLost)
+		SpecialFood	*speFood = _game->getSpeFood();
+		if (speFood && !_hasLost)
 		{
-			SpecialFood	*speFood = _game->getSpeFood();
 			speFood->setLifeSpan(deltaTime);
 			if (speFood->getLifeSpan() == 0)
 				_game->eraseEntity(speFood);
 		}
-		deltaTime = 0;
+		frameRate += speFood != NULL ? (_game->getEntities().size() - 6) / 2 : (_game->getEntities().size() - 5) / 2;
+		if (frameRate > 60)
+			frameRate = 60;
 	}
 }
 

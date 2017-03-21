@@ -6,17 +6,16 @@
 #    By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/10 14:48:27 by tiboitel          #+#    #+#              #
-#    Updated: 2017/03/06 15:24:03 by tlepeche         ###   ########.fr        #
+#    Updated: 2017/03/21 15:40:09 by tlepeche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	ncurse_renderer.so
 SRCS		=	NCurseRenderer.cpp
-INCLUDES	=	./includes
 SRCSPATH	=	./srcs/
 CC			=	clang++
 CFLAGS		=	-Wall -Werror -Wextra -std=c++11
-INCLUDES_O	=	-I $(INCLUDES) -I ../includes
+INCLUDES	=	-I ./includes -I ../includes
 OBJDIR		=	obj/
 OBJS		=	$(SRCS:%.cpp=$(OBJDIR)%.o)
 
@@ -27,7 +26,7 @@ $(NAME): $(OBJS)
 
 $(OBJDIR)%.o: $(SRCSPATH)%.cpp
 	mkdir -p $(OBJDIR)
-	$(CC) -o $@ $(INCLUDES_O) $(CFLAGS) -c $<
+	$(CC) -o $@ $(INCLUDES) $(CFLAGS) -c $<
 
 clean:
 	rm -rf $(OBJDIR)

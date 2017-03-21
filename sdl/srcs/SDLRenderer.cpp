@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:04 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/20 14:44:10 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/21 16:39:22 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ E_EVENT_TYPE	SDLRenderer::getLastEvent(void)
 				return (E_EVENT_TYPE::RIGHT);
 			if (event.key.keysym.sym == SDLK_ESCAPE)
 				return (E_EVENT_TYPE::QUIT);
+			if (event.key.keysym.sym == SDLK_SPACE)
+				return (E_EVENT_TYPE::SPACE);
 			if (event.key.keysym.sym == SDLK_1)
 				return (E_EVENT_TYPE::LOAD_LIBRARY_ONE);
 			if (event.key.keysym.sym == SDLK_2)
@@ -168,6 +170,18 @@ void	SDLRenderer::render(void) const
 void	SDLRenderer::drawSnake(Snake *snake) const
 {
 	SDL_SetRenderDrawColor(_renderer, 0, 255, 0, 255);
+	SDL_Rect		r;
+
+	r.x = (snake->getPos().first + 1) * SQUARE_LEN;
+	r.y = (snake->getPos().second + 1) * SQUARE_LEN;
+	r.h = SQUARE_LEN;
+	r.w = SQUARE_LEN;
+	SDL_RenderFillRect(_renderer, &r);
+}
+
+void	SDLRenderer::drawSnakeHead(Snake *snake) const
+{
+	SDL_SetRenderDrawColor(_renderer, 255, 0, 255, 255);
 	SDL_Rect		r;
 
 	r.x = (snake->getPos().first + 1) * SQUARE_LEN;
@@ -213,7 +227,6 @@ void	SDLRenderer::drawGO() const
 {
 	SDL_Rect destZ = {SQUARE_LEN, SQUARE_LEN, (_width - 2) * SQUARE_LEN, (_height - 2) * SQUARE_LEN};
 	SDL_RenderCopy(_renderer, _text, NULL, &destZ);
-	return;
 }
 
 void	SDLRenderer::clearScreen(void) const

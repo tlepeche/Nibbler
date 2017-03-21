@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:42:42 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/20 14:30:33 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/21 16:30:28 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 typedef enum class	e_event_type
 {
-	UP, RIGHT, LEFT, DOWN, 	QUIT, PAUSED, LOAD_LIBRARY_ONE, LOAD_LIBRARY_TWO,
+	UP, RIGHT, LEFT, DOWN, 	QUIT, PAUSED, SPACE, LOAD_LIBRARY_ONE, LOAD_LIBRARY_TWO,
 		LOAD_LIBRARY_THREE, RESIZE, UNKNOWN
 }					E_EVENT_TYPE;
 
@@ -30,6 +30,7 @@ class IRenderer
 		virtual bool			init(int windw_w, int windw_h) = 0;
 		virtual E_EVENT_TYPE	getLastEvent(void) = 0;
 		virtual void			drawSnake(Snake	*snake) const = 0;
+		virtual void			drawSnakeHead(Snake	*snake) const = 0;
 		virtual void			drawFood(Food *food) const = 0;
 		virtual void			drawSpecFood(SpecialFood *food) const = 0;
 		virtual void			drawScore(size_t score) const = 0;

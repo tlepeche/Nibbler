@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:02:07 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/20 14:58:19 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/21 17:33:15 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,10 @@
 #include <IRenderer.hpp>
 #include <SpecialFood.hpp>
 
-# define MS_PER_UPDATE 1
-
 class Engine
 {
 	public:	
-		Engine(char	*width, char *height);
+		Engine(char	*width, char *height, bool debug = false);
 		~Engine();
 		Engine		(const Engine &rhs);
 		Engine		&operator=(Engine const &rhs);
@@ -34,18 +32,22 @@ class Engine
 		void		setRenderer(const char *DLPath);
 		bool		getIsPaused() const;
 		bool		getHasLost() const;
+		bool		getDebug() const;
 		Game		*getGame() const;
 		IRenderer	*getRenderer() const;
 		void		*getHandler() const;
+		void		handleLibChange(E_EVENT_TYPE const &event);
 
 	private:
 		Engine();
+		void		draw();
+
 		bool		_isPaused;
 		bool		_hasLost;
-		void		draw();
 		Game		*_game;
 		IRenderer	*_renderer;
 		void		*_handler;
+		bool		_debug;
 };
 
 class EngineDlsymException : public NibblerException
