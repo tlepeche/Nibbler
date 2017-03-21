@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:07:14 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/21 17:43:40 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/21 19:39:45 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void		Game::changePos()
 	}
 }
 
-void					Game::handleInputs(E_EVENT_TYPE &event)
+void	Game::handleInputs(E_EVENT_TYPE &event)
 {
 	Snake *SnakeHead = dynamic_cast<Snake *>(*(_entities.begin()));
 	if (!SnakeHead)
@@ -199,9 +199,9 @@ void	Game::addSquare()
 bool	Game::update(void)
 {
 	Food	*Fruit;
+
 	if (_hasEaten)
 		addSquare();
-
 	Snake *SnakeHead = dynamic_cast<Snake *>(*(_entities.begin()));
 	std::pair<int, int> newPos(SnakeHead->getPos().first + SnakeHead->getVectorX(),
 			SnakeHead->getPos().second + SnakeHead->getVectorY());
@@ -221,23 +221,32 @@ bool	Game::update(void)
 					Fruit->setPos(std::rand() % _width, std::rand() % _height);
 				else
 					eraseEntity(Fruit);
+				break;
 			}
 			else
 				return false;
 		}
+	}
+	for (std::vector<AEntity *>::iterator it = _entities.begin() + 1; it != _entities.end() ; it++)
+	{
 		if ((*it)->getType() == E_ENTITIES_TYPE::SNAKE)
-			_TailPos = (*it)->getPos();
+				_TailPos = (*it)->getPos();
 	}
 	return true;
 }
 
-void					Game::draw(IRenderer *renderer, bool hasLost)
+void	Game::draw(IRenderer *renderer, bool hasLost)
 {
 	renderer->clearScreen();
 	for (std::vector <AEntity *>::iterator it = _entities.begin(); it != _entities.end();
 			it++)
 	{
 		renderer->drawScore(_score);
+		if ((*it)->getType() == E_ENTITIES_TYPE::FOOD)
+			renderer->drawFood(dynamic_cast<Food *>(*it));
+	   	if( (*it)->getType() == E_ENTITIES_TYPE::SPECIALFOOD)
+			renderer->drawSpecFood(dynamic_cast<SpecialFood *>(*it));
+
 		if ((*it)->getType() == E_ENTITIES_TYPE::SNAKE)
 		{
 			if (it == _entities.begin())
@@ -245,12 +254,13 @@ void					Game::draw(IRenderer *renderer, bool hasLost)
 			else
 				renderer->drawSnake(dynamic_cast<Snake *>(*it));
 		}
-		if ((*it)->getType() == E_ENTITIES_TYPE::FOOD)
-			renderer->drawFood(dynamic_cast<Food *>(*it));
-	   	if( (*it)->getType() == E_ENTITIES_TYPE::SPECIALFOOD)
-			renderer->drawSpecFood(dynamic_cast<SpecialFood *>(*it));
 		if (hasLost)
 			renderer->drawGO();
 	}
 	renderer->render();
+}
+
+void	Game::close()
+{
+	_entities.clear();	
 }

@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:02:09 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/21 17:16:16 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/21 18:52:28 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ class Game
 		int						getHeight() const;
 		SpecialFood				*getSpeFood();
 		bool					getHasEaten() const;
+		void					close();
 
 		bool					hasHit(AEntity &Head, AEntity &src);
 		int						addEntities(AEntity *entity);

@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 10:36:49 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/21 16:54:20 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/21 18:59:43 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ E_EVENT_TYPE	SFMLRenderer::getLastEvent()
 					return E_EVENT_TYPE::RIGHT;
 				if (event.key.code == sf::Keyboard::Space)
 					return E_EVENT_TYPE::SPACE;
+				if (event.key.code == sf::Keyboard::R)
+					return E_EVENT_TYPE::RESTART;
 				if (event.key.code == sf::Keyboard::Num1)
 					return E_EVENT_TYPE::LOAD_LIBRARY_ONE;
 				if (event.key.code == sf::Keyboard::Num2)

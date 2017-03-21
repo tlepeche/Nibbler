@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:04 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/21 16:39:22 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/21 18:58:57 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,8 @@ E_EVENT_TYPE	SDLRenderer::getLastEvent(void)
 				return (E_EVENT_TYPE::QUIT);
 			if (event.key.keysym.sym == SDLK_SPACE)
 				return (E_EVENT_TYPE::SPACE);
+			if (event.key.keysym.sym == SDLK_r)
+				return (E_EVENT_TYPE::RESTART);
 			if (event.key.keysym.sym == SDLK_1)
 				return (E_EVENT_TYPE::LOAD_LIBRARY_ONE);
 			if (event.key.keysym.sym == SDLK_2)

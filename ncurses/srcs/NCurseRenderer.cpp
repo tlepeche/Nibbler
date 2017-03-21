@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 14:19:45 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/21 16:43:25 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/21 19:03:37 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,9 @@ E_EVENT_TYPE NCurseRenderer::getLastEvent()
 			break;
 		case (51):
 			return (E_EVENT_TYPE::LOAD_LIBRARY_THREE);
+			break;
+		case ('r'):
+			return (E_EVENT_TYPE::RESTART);
 			break;
 		case KEY_UP:
 			return (E_EVENT_TYPE::UP);

@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:42:42 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/21 16:30:28 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/21 19:00:07 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@
 
 typedef enum class	e_event_type
 {
-	UP, RIGHT, LEFT, DOWN, 	QUIT, PAUSED, SPACE, LOAD_LIBRARY_ONE, LOAD_LIBRARY_TWO,
-		LOAD_LIBRARY_THREE, RESIZE, UNKNOWN
+	UP, RIGHT, LEFT, DOWN, 	QUIT, PAUSED, SPACE, RESTART,
+	LOAD_LIBRARY_ONE, LOAD_LIBRARY_TWO,	LOAD_LIBRARY_THREE,
+	RESIZE, UNKNOWN
 }					E_EVENT_TYPE;
 
 class IRenderer

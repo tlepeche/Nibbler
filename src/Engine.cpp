@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/21 17:33:04 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/21 19:37:06 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,13 @@ void Engine::handleGame(void)
 		if (event == E_EVENT_TYPE::QUIT)
 		{
 			_renderer->close();
+			_game->close();
 			return ;
+		}
+		else if (event == E_EVENT_TYPE::RESTART)
+		{
+			_hasLost = false;
+			_game->init();
 		}
 		else if (event == E_EVENT_TYPE::SPACE && _debug)
 			_game->addSquare();
