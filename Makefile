@@ -6,7 +6,7 @@
 #    By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/10 14:48:27 by tiboitel          #+#    #+#              #
-#    Updated: 2017/03/21 15:39:13 by tlepeche         ###   ########.fr        #
+#    Updated: 2017/03/23 19:01:27 by tiboitel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ INC = -I includes
 
 CFLAGS = -Wall -Werror -Wextra -std=c++11
 
-all: $(NAME) lib_sfml lib_curse lib_sdl 
+all: $(NAME) lib_sfml lib_curse lib_sdl lib_audio
 
 $(NAME): $(OBJ)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
@@ -52,6 +52,9 @@ lib_sfml:
 lib_curse:
 	make -C ncurses
 
+lib_audio:
+	make -C audio
+
 $(OBJDIR)%.o: $(SRCDIR)%.cpp
 	@mkdir -p $(OBJDIR)
 	@$(CC) $(CFLAGS) -c $(INC) $< -o $@ 
@@ -65,6 +68,7 @@ fclean: clean
 	make -C ncurses/ fclean
 	make -C sdl/ fclean
 	make -C sfml/ fclean
+	make -C audio/ fclean
 	@$(RM) $(NAME)
 	@echo $(RM_STR) $(NAME)
 

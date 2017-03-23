@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:02:07 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/21 17:33:15 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/23 18:26:36 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,35 +19,40 @@
 #include <Exception.hpp>
 #include <IRenderer.hpp>
 #include <SpecialFood.hpp>
+#include <IAudioDevice.hpp>
 
 class Engine
 {
 	public:	
 		Engine(char	*width, char *height, bool debug = false);
 		~Engine();
-		Engine		(const Engine &rhs);
-		Engine		&operator=(Engine const &rhs);
-		bool		init(void);
-		void		handleGame(void);
-		void		setRenderer(const char *DLPath);
-		bool		getIsPaused() const;
-		bool		getHasLost() const;
-		bool		getDebug() const;
-		Game		*getGame() const;
-		IRenderer	*getRenderer() const;
-		void		*getHandler() const;
-		void		handleLibChange(E_EVENT_TYPE const &event);
+		Engine			(const Engine &rhs);
+		Engine			&operator=(Engine const &rhs);
+		bool			init(void);
+		void			handleGame(void);
+		void			setRenderer(const char *DLPath);
+		void			setAudioDevice(const char *DLPath);
+		bool			getIsPaused() const;
+		bool			getHasLost() const;
+		bool			getDebug() const;
+		Game			*getGame() const;
+		IRenderer		*getRenderer() const;
+		void			*getHandler() const;
+		IAudioDevice	*getAudioDevice() const;
+		void			handleLibChange(E_EVENT_TYPE const &event);
 
 	private:
 		Engine();
-		void		draw();
+		void			draw();
 
-		bool		_isPaused;
-		bool		_hasLost;
-		Game		*_game;
-		IRenderer	*_renderer;
-		void		*_handler;
-		bool		_debug;
+		bool			_isPaused;
+		bool			_hasLost;
+		Game			*_game;
+		IRenderer		*_renderer;
+		IAudioDevice	*_audio_device;
+		void			*_audio_handler;
+		void			*_handler;
+		bool			_debug;
 };
 
 class EngineDlsymException : public NibblerException

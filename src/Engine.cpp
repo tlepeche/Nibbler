@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/21 19:37:06 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/23 19:00:57 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ Engine::Engine()
 
 Engine::Engine(char *width, char *height, bool debug): _hasLost(false), _handler(NULL), _debug(debug)
 {
+	_audio_handler = NULL;
 	_game = new Game(width, height);
 	setRenderer("sfml/sfml_renderer.so");
+	setAudioDevice("audio/sdl_audio.so");
 }
 
 Engine::Engine(Engine const &rhs)
@@ -37,16 +39,18 @@ Engine &Engine::operator=(Engine const &rhs)
 		_game = rhs.getGame();
 		_renderer = rhs.getRenderer();
 		_handler = rhs.getHandler();
+		_audio_device = rhs.getAudioDevice();
 	}
 	return (*this);
 }
 
-bool		Engine::getIsPaused() const { return _isPaused; }
-bool		Engine::getHasLost() const { return _hasLost; }
-bool		Engine::getDebug() const { return _debug; }
-Game		*Engine::getGame() const { return _game; }
-IRenderer	*Engine::getRenderer() const { return _renderer; }
-void		*Engine::getHandler() const { return _handler; }
+bool			Engine::getIsPaused() const { return _isPaused; }
+bool			Engine::getHasLost() const { return _hasLost; }
+bool			Engine::getDebug() const { return _debug; }
+Game			*Engine::getGame() const { return _game; }
+IRenderer		*Engine::getRenderer() const { return _renderer; }
+IAudioDevice	*Engine::getAudioDevice() const { return _audio_device; }
+void			*Engine::getHandler() const { return _handler; }
 
 Engine::~Engine()
 {
@@ -55,6 +59,31 @@ Engine::~Engine()
 		throw NibblerException("Unable to close handler.");
 	delete _game;
 }
+
+void	Engine::setAudioDevice(const char *DLPath)
+{
+	IAudioDevice	*(*create_audiodevice)();
+	
+	if (_audio_handler != NULL)
+	{
+		_audio_device->close();
+		if (dlclose(_audio_handler) != 0)
+			throw EngineDlsymException("Unable to close handler. Error", dlerror(), DLPath);
+		_audio_handler = NULL;
+	}
+	_audio_handler = dlopen(DLPath, RTLD_LAZY);
+	if (!_audio_handler)
+		throw EngineDlsymException("Unable to dlopen. Error:", dlerror(), DLPath);
+	create_audiodevice = reinterpret_cast<IAudioDevice * (*)()>(dlsym(_audio_handler, "create_audiodevice"));
+	if (!create_audiodevice)
+		throw EngineDlsymException("Unable to find symbol. Error", dlerror(),
+				DLPath);
+	_audio_device = create_audiodevice();
+	if (!_audio_device->init())
+		throw NibblerException("Unable to initialize dynamic audio device.");
+	(void)DLPath;
+}
+
 
 void	Engine::setRenderer(const char *DLpath)
 {

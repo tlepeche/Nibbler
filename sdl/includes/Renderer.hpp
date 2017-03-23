@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:13 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/21 15:45:57 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/23 18:33:07 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "Food.hpp"
 
 #define SQUARE_LEN 16
+
 class SDLRenderer : public IRenderer
 {
 	public:
