@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:04 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/23 14:53:33 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/23 18:53:33 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,14 @@ E_EVENT_TYPE	SDLRenderer::getLastEvent(void)
 						return (E_EVENT_TYPE::LEFT);
 					case (SDLK_RIGHT):
 						return (E_EVENT_TYPE::RIGHT);
+					case (SDLK_w):
+						return (E_EVENT_TYPE::W);
+					case (SDLK_s):
+						return (E_EVENT_TYPE::S);
+					case (SDLK_a):
+						return (E_EVENT_TYPE::A);
+					case (SDLK_d):
+						return (E_EVENT_TYPE::D);
 					case (SDLK_ESCAPE):
 						return (E_EVENT_TYPE::QUIT);
 					case (SDLK_SPACE):
@@ -175,7 +183,7 @@ void	SDLRenderer::render(void) const
 	SDL_RenderPresent(_renderer);
 }
 
-void	SDLRenderer::drawSnake(Snake *snake) const
+void	SDLRenderer::drawP1Snake(Snake *snake) const
 {
 	SDL_SetRenderDrawColor(_renderer, 0, 255, 0, 255);
 	SDL_Rect		r;
@@ -187,9 +195,33 @@ void	SDLRenderer::drawSnake(Snake *snake) const
 	SDL_RenderFillRect(_renderer, &r);
 }
 
-void	SDLRenderer::drawSnakeHead(Snake *snake) const
+void	SDLRenderer::drawP1SnakeHead(Snake *snake) const
 {
 	SDL_SetRenderDrawColor(_renderer, 255, 0, 255, 255);
+	SDL_Rect		r;
+
+	r.x = (snake->getPos().first + 1) * SQUARE_LEN;
+	r.y = (snake->getPos().second + 1) * SQUARE_LEN;
+	r.h = SQUARE_LEN;
+	r.w = SQUARE_LEN;
+	SDL_RenderFillRect(_renderer, &r);
+}
+
+void	SDLRenderer::drawP2Snake(Snake *snake) const
+{
+	SDL_SetRenderDrawColor(_renderer, 0, 0, 255, 255);
+	SDL_Rect		r;
+
+	r.x = (snake->getPos().first + 1) * SQUARE_LEN;
+	r.y = (snake->getPos().second + 1) * SQUARE_LEN;
+	r.h = SQUARE_LEN;
+	r.w = SQUARE_LEN;
+	SDL_RenderFillRect(_renderer, &r);
+}
+
+void	SDLRenderer::drawP2SnakeHead(Snake *snake) const
+{
+	SDL_SetRenderDrawColor(_renderer, 100, 100, 255, 255);
 	SDL_Rect		r;
 
 	r.x = (snake->getPos().first + 1) * SQUARE_LEN;

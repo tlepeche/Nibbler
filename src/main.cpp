@@ -3,13 +3,22 @@
 int main(int ac, char **av)
 {
 	bool debug = false;
+	bool multi = false;
 	if (ac == 4)
 	{
-		std::string str(av[1]);
-		if (str.compare("-d") == 0)
+		if (av[1][0] == '-')
 		{
-			debug = true;
-			ac = 3;
+			std::string str(av[1]);
+			if (str.find('d') != std::string::npos)
+			{
+				debug = true;
+				ac = 3;
+			}
+			if (str.find('m') != std::string::npos)
+			{
+				multi = true;
+				ac = 3;
+			}
 		}
 	}
 	if (ac != 3)
@@ -20,10 +29,10 @@ int main(int ac, char **av)
 	try
 	{
 		Engine	*engine;
-		if (debug)
-			engine = new Engine(av[2], av[3], true);
+		if (debug || multi)
+			engine = new Engine(av[2], av[3], debug, multi);
 		else
-			engine = new Engine(av[1], av[2]);
+			engine = new Engine(av[1], av[2], debug, multi);
 		engine->init();
 		delete engine;
 	}

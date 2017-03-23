@@ -6,7 +6,7 @@
 #    By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/10 14:48:27 by tiboitel          #+#    #+#              #
-#    Updated: 2017/03/23 19:01:04 by tiboitel         ###   ########.fr        #
+#    Updated: 2017/03/23 19:10:01 by tlepeche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ fclean:	clean
 re: fclean all
 
 sdl2_mixer:
-	if [ ! "~/.brew/Cellar/sdl2_mixer/2.0.1/lib/libSDL2_mixer.a" ]; then \
+	if [ ! -e "$(shell pwd)/.brew/Cellar/sdl2_mixer/2.0.1/lib/libSDL2_mixer.a" ]; then \
 	brew install sdl2_mixer; \
 	fi
 

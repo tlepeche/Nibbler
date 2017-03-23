@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 14:19:45 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/21 19:03:37 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/23 18:52:56 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,11 @@ bool	NCurseRenderer::init(int wind_w, int wind_h)
 		start_color();
 		init_pair(1, COLOR_WHITE, COLOR_WHITE); //WALL
 		init_pair(2, COLOR_YELLOW, COLOR_YELLOW); // FOOD
-		init_pair(3, COLOR_GREEN, COLOR_GREEN); // SNAKE
+		init_pair(3, COLOR_GREEN, COLOR_GREEN); // P1SNAKE
 		init_pair(4, COLOR_RED, COLOR_RED); // SPECIALFOOD
-		init_pair(5, COLOR_MAGENTA, COLOR_MAGENTA); // SPECIALFOOD
+		init_pair(5, COLOR_MAGENTA, COLOR_MAGENTA); // P1SNAKEHEAD
+		init_pair(6, COLOR_BLUE, COLOR_BLUE); // P2SNAKE
+		init_pair(7, COLOR_CYAN, COLOR_CYAN); // P2SNAKEHEAD
 		_window = newwin(_width, _height + 1, 0, 0);
 		_isCurseInit = true;
 		return true;
@@ -122,6 +124,18 @@ E_EVENT_TYPE NCurseRenderer::getLastEvent()
 			break;
 		case ('r'):
 			return (E_EVENT_TYPE::RESTART);
+			break;
+		case ('w'):
+			return (E_EVENT_TYPE::W);
+			break;
+		case ('a'):
+			return (E_EVENT_TYPE::A);
+			break;
+		case ('s'):
+			return (E_EVENT_TYPE::S);
+			break;
+		case ('d'):
+			return (E_EVENT_TYPE::D);
 			break;
 		case KEY_UP:
 			return (E_EVENT_TYPE::UP);
@@ -168,18 +182,32 @@ void	NCurseRenderer::drawSpecFood(SpecialFood *food) const
 	attroff(COLOR_PAIR(4));
 }
 
-void	NCurseRenderer::drawSnake(Snake *snake) const
+void	NCurseRenderer::drawP1Snake(Snake *snake) const
 {
 	attron(COLOR_PAIR(3));
 	mvprintw(snake->getPos().second + 2, snake->getPos().first + 1, "#");
 	attroff(COLOR_PAIR(3));
 }
 
-void	NCurseRenderer::drawSnakeHead(Snake *snake) const
+void	NCurseRenderer::drawP1SnakeHead(Snake *snake) const
 {
 	attron(COLOR_PAIR(5));
 	mvprintw(snake->getPos().second + 2, snake->getPos().first + 1, "#");
 	attroff(COLOR_PAIR(5));
+}
+
+void	NCurseRenderer::drawP2Snake(Snake *snake) const
+{
+	attron(COLOR_PAIR(6));
+	mvprintw(snake->getPos().second + 2, snake->getPos().first + 1, "#");
+	attroff(COLOR_PAIR(6));
+}
+
+void	NCurseRenderer::drawP2SnakeHead(Snake *snake) const
+{
+	attron(COLOR_PAIR(7));
+	mvprintw(snake->getPos().second + 2, snake->getPos().first + 1, "#");
+	attroff(COLOR_PAIR(7));
 }
 
 void	NCurseRenderer::drawScore(size_t score) const
