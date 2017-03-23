@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:42:42 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/21 19:00:07 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/23 18:51:09 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@
 
 typedef enum class	e_event_type
 {
-	UP, RIGHT, LEFT, DOWN, 	QUIT, PAUSED, SPACE, RESTART,
+	UP, RIGHT, LEFT, DOWN,
+	W, D, A, S,
+	QUIT, PAUSED, SPACE, RESTART,
 	LOAD_LIBRARY_ONE, LOAD_LIBRARY_TWO,	LOAD_LIBRARY_THREE,
 	RESIZE, UNKNOWN
 }					E_EVENT_TYPE;
@@ -30,8 +32,12 @@ class IRenderer
 		virtual 				~IRenderer() {};
 		virtual bool			init(int windw_w, int windw_h) = 0;
 		virtual E_EVENT_TYPE	getLastEvent(void) = 0;
-		virtual void			drawSnake(Snake	*snake) const = 0;
-		virtual void			drawSnakeHead(Snake	*snake) const = 0;
+
+		virtual void			drawP1Snake(Snake	*snake) const = 0;
+		virtual void			drawP1SnakeHead(Snake	*snake) const = 0;
+		virtual void			drawP2Snake(Snake	*snake) const = 0;
+		virtual void			drawP2SnakeHead(Snake	*snake) const = 0;
+
 		virtual void			drawFood(Food *food) const = 0;
 		virtual void			drawSpecFood(SpecialFood *food) const = 0;
 		virtual void			drawScore(size_t score) const = 0;

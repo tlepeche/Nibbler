@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:13 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/23 14:55:59 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/23 18:51:20 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,10 @@ class SFMLRenderer : public IRenderer
 		bool 			close(void);
 		void			render(void) const;
 		void			clearScreen(void) const;
-		void			drawSnake(Snake *snake) const;
-		void			drawSnakeHead(Snake	*snake) const;
+		void			drawP1Snake(Snake *snake) const;
+		void			drawP1SnakeHead(Snake	*snake) const;
+		void			drawP2Snake(Snake *snake) const;
+		void			drawP2SnakeHead(Snake	*snake) const;
 		void			drawFood(Food *food) const;
 		void			drawLimits() const;
 		void			drawSpecFood(SpecialFood *food) const;

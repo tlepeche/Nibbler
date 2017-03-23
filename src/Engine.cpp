@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/21 19:37:06 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/23 18:30:22 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ Engine::Engine()
 {
 }
 
-Engine::Engine(char *width, char *height, bool debug): _hasLost(false), _handler(NULL), _debug(debug)
+Engine::Engine(char *width, char *height, bool debug, bool isMulti):
+   	_hasLost(false), _handler(NULL), _debug(debug), _isMulti(isMulti)
 {
 	_game = new Game(width, height);
 	setRenderer("sfml/sfml_renderer.so");
@@ -37,16 +38,10 @@ Engine &Engine::operator=(Engine const &rhs)
 		_game = rhs.getGame();
 		_renderer = rhs.getRenderer();
 		_handler = rhs.getHandler();
+		_isMulti = rhs.getIsMulti();
 	}
 	return (*this);
 }
-
-bool		Engine::getIsPaused() const { return _isPaused; }
-bool		Engine::getHasLost() const { return _hasLost; }
-bool		Engine::getDebug() const { return _debug; }
-Game		*Engine::getGame() const { return _game; }
-IRenderer	*Engine::getRenderer() const { return _renderer; }
-void		*Engine::getHandler() const { return _handler; }
 
 Engine::~Engine()
 {
@@ -55,6 +50,25 @@ Engine::~Engine()
 		throw NibblerException("Unable to close handler.");
 	delete _game;
 }
+
+bool	Engine::init(void)
+{
+	_game->init(_isMulti);
+	_isPaused = false;
+	if (_isMulti)
+		handleMultiGame();
+	else
+		handleGame();
+	return (true);
+}
+
+bool		Engine::getIsPaused() const { return _isPaused; }
+bool		Engine::getHasLost() const { return _hasLost; }
+bool		Engine::getDebug() const { return _debug; }
+Game		*Engine::getGame() const { return _game; }
+IRenderer	*Engine::getRenderer() const { return _renderer; }
+void		*Engine::getHandler() const { return _handler; }
+bool		Engine::getIsMulti() const { return _isMulti; }
 
 void	Engine::setRenderer(const char *DLpath)
 {
@@ -78,14 +92,6 @@ void	Engine::setRenderer(const char *DLpath)
 	if (!_renderer->init(_game->getWidth(), _game->getHeight()))
 		throw NibblerException("Unable to initialize dynamic renderer.");
 	_isPaused = false;
-}
-
-bool	Engine::init(void)
-{
-	_game->init();
-	_isPaused = false;
-	handleGame();
-	return (true);
 }
 
 void	Engine::handleLibChange(E_EVENT_TYPE const &event)
@@ -128,6 +134,7 @@ void	Engine::handleLibChange(E_EVENT_TYPE const &event)
 	}
 }
 
+//TODO: Faire une seconde fonction pour le multi (plus simple que modif celle la
 void Engine::handleGame(void)
 {
 	E_EVENT_TYPE		event;
@@ -151,19 +158,19 @@ void Engine::handleGame(void)
 		else if (event == E_EVENT_TYPE::RESTART)
 		{
 			_hasLost = false;
-			_game->init();
+			_game->init(_isMulti);
 		}
 		else if (event == E_EVENT_TYPE::SPACE && _debug)
-			_game->addSquare();
+			_game->addSquare(1);
 		handleLibChange(event);
 		endFrame = std::clock();
 		if (_isPaused == false && event != E_EVENT_TYPE::RESIZE)
 		{
-			_game->handleInputs(event);
+			_game->handleP1Inputs(event);
 			if (!_hasLost && !(_game->update()))
 				_hasLost = true;
 			if (!_hasLost)
-				_game->changePos();
+				_game->changePos(1);
 			_game->draw(_renderer, _hasLost);
 		}
 		deltaTime = endFrame - startFrame;
@@ -181,6 +188,75 @@ void Engine::handleGame(void)
 				_game->eraseEntity(speFood);
 		}
 		frameRate += speFood != NULL ? (_game->getEntities().size() - 6) / 2 : (_game->getEntities().size() - 5) / 2;
+		if (frameRate > 60)
+			frameRate = 60;
+	}
+}
+
+void Engine::handleMultiGame(void)
+{
+	E_EVENT_TYPE		event;
+	double				frameRate;
+	std::clock_t		deltaTime;
+	std::clock_t		endFrame;
+
+	while (true)
+	{
+		frameRate = 10;
+		if (std::rand() % 100 == 1 && !(_game->getSpeFood()) && !_hasLost)
+			_game->addSpecialFood();
+		std::clock_t startFrame = std::clock();
+		event = _renderer->getLastEvent();
+		if (event == E_EVENT_TYPE::QUIT)
+		{
+			_renderer->close();
+			_game->close();
+			return ;
+		}
+		else if (event == E_EVENT_TYPE::RESTART)
+		{
+			_hasLost = false;
+			_game->init(_isMulti);
+		}
+		else if (event == E_EVENT_TYPE::SPACE && _debug)
+		{
+			_game->addSquare(1);
+			_game->addSquare(2);
+		}
+		handleLibChange(event);
+		endFrame = std::clock();
+		if (_isPaused == false && event != E_EVENT_TYPE::RESIZE)
+		{
+			_game->handleP1Inputs(event);
+			_game->handleP2Inputs(event);
+			event = _renderer->getLastEvent();
+			_game->handleP1Inputs(event);
+			_game->handleP2Inputs(event);
+			if (!_hasLost && !(_game->update()))
+				_hasLost = true;
+			if (!_hasLost)
+			{
+				_game->changePos(1);
+				_game->changePos(2);
+			}
+			_game->draw(_renderer, _hasLost);
+		}
+		deltaTime = endFrame - startFrame;
+		while (((deltaTime / (double)CLOCKS_PER_SEC) * 1000.0) < (1000.0 / frameRate))
+		{
+			endFrame = std::clock();
+			deltaTime = endFrame - startFrame;
+		}
+
+		SpecialFood	*speFood = _game->getSpeFood();
+		if (speFood && !_hasLost)
+		{
+			speFood->setLifeSpan(deltaTime);
+			if (speFood->getLifeSpan() == 0)
+				_game->eraseEntity(speFood);
+		}
+		int size = _game->getSnakeOne().size() > _game->getSnakeTwo().size() ? _game->getSnakeOne().size() : _game->getSnakeTwo().size() ; 
+		frameRate += (size - 5) / 2;
 		if (frameRate > 60)
 			frameRate = 60;
 	}

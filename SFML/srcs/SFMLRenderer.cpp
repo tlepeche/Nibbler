@@ -6,7 +6,7 @@
 /*   By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 10:36:49 by tlepeche          #+#    #+#             */
-/*   Updated: 2017/03/23 14:53:13 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/23 18:51:06 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,6 @@ E_EVENT_TYPE	SFMLRenderer::check(sf::Event event)
 	{
 		case (sf::Keyboard::Escape):
 			return E_EVENT_TYPE::QUIT;
-		case (sf::Keyboard::Up):
-			return E_EVENT_TYPE::UP;
-		case (sf::Keyboard::Down):
-			return E_EVENT_TYPE::DOWN;
-		case (sf::Keyboard::Left):
-			return E_EVENT_TYPE::LEFT;
-		case (sf::Keyboard::Right):
-			return E_EVENT_TYPE::RIGHT;
 		case (sf::Keyboard::Space):
 			return E_EVENT_TYPE::SPACE;
 		case (sf::Keyboard::R):
@@ -91,6 +83,22 @@ E_EVENT_TYPE	SFMLRenderer::check(sf::Event event)
 			return E_EVENT_TYPE::LOAD_LIBRARY_TWO;
 		case (sf::Keyboard::Num3):
 			return E_EVENT_TYPE::LOAD_LIBRARY_THREE;
+		case (sf::Keyboard::Up):
+			return E_EVENT_TYPE::UP;
+		case (sf::Keyboard::Down):
+			return E_EVENT_TYPE::DOWN;
+		case (sf::Keyboard::Left):
+			return E_EVENT_TYPE::LEFT;
+		case (sf::Keyboard::Right):
+			return E_EVENT_TYPE::RIGHT;
+		case (sf::Keyboard::W):
+			return E_EVENT_TYPE::W;
+		case (sf::Keyboard::S):
+			return E_EVENT_TYPE::S;
+		case (sf::Keyboard::D):
+			return E_EVENT_TYPE::D;
+		case (sf::Keyboard::A):
+			return E_EVENT_TYPE::A;
 		default:
 			return E_EVENT_TYPE::UNKNOWN;
 			break;
@@ -122,7 +130,7 @@ void			SFMLRenderer::render() const
 	_window->display();
 }
 
-void	SFMLRenderer::drawSnake(Snake *snake) const
+void	SFMLRenderer::drawP1Snake(Snake *snake) const
 {
 	sf::RectangleShape rectangle(sf::Vector2f(SQUARE_LEN, SQUARE_LEN));
 
@@ -131,11 +139,29 @@ void	SFMLRenderer::drawSnake(Snake *snake) const
 	_window->draw(rectangle);
 }
 
-void	SFMLRenderer::drawSnakeHead(Snake *snake) const
+void	SFMLRenderer::drawP1SnakeHead(Snake *snake) const
 {
 	sf::RectangleShape rectangle(sf::Vector2f(SQUARE_LEN, SQUARE_LEN));
 
 	rectangle.setFillColor(sf::Color(255, 0, 255));
+	rectangle.setPosition((snake->getPos().first + 1) * SQUARE_LEN, (snake->getPos().second + 1) * SQUARE_LEN);
+	_window->draw(rectangle);
+}
+
+void	SFMLRenderer::drawP2Snake(Snake *snake) const
+{
+	sf::RectangleShape rectangle(sf::Vector2f(SQUARE_LEN, SQUARE_LEN));
+
+	rectangle.setFillColor(sf::Color(0, 0, 255));
+	rectangle.setPosition((snake->getPos().first + 1) * SQUARE_LEN, (snake->getPos().second + 1) * SQUARE_LEN);
+	_window->draw(rectangle);
+}
+
+void	SFMLRenderer::drawP2SnakeHead(Snake *snake) const
+{
+	sf::RectangleShape rectangle(sf::Vector2f(SQUARE_LEN, SQUARE_LEN));
+
+	rectangle.setFillColor(sf::Color(100, 100, 255));
 	rectangle.setPosition((snake->getPos().first + 1) * SQUARE_LEN, (snake->getPos().second + 1) * SQUARE_LEN);
 	_window->draw(rectangle);
 }
