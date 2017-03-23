@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:13 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/21 15:46:06 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/23 14:55:59 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ class SFMLRenderer : public IRenderer
 		void			drawGO() const;
 		void			drawScore(size_t score) const;
 		E_EVENT_TYPE	getLastEvent(void);
+		E_EVENT_TYPE	check(sf::Event event);
 
 	private:
 		sf::RenderWindow	*_window;

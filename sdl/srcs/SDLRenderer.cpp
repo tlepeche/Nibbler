@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 15:55:04 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/21 18:58:57 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/23 14:53:33 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,27 +135,33 @@ E_EVENT_TYPE	SDLRenderer::getLastEvent(void)
 			return (E_EVENT_TYPE::QUIT);
 			break;
 		case SDL_KEYDOWN:
-			if (event.key.keysym.sym == SDLK_UP)
-				return (E_EVENT_TYPE::UP);
-			if (event.key.keysym.sym == SDLK_DOWN)
-				return (E_EVENT_TYPE::DOWN);
-			if (event.key.keysym.sym == SDLK_LEFT)
-				return (E_EVENT_TYPE::LEFT);
-			if (event.key.keysym.sym == SDLK_RIGHT)
-				return (E_EVENT_TYPE::RIGHT);
-			if (event.key.keysym.sym == SDLK_ESCAPE)
-				return (E_EVENT_TYPE::QUIT);
-			if (event.key.keysym.sym == SDLK_SPACE)
-				return (E_EVENT_TYPE::SPACE);
-			if (event.key.keysym.sym == SDLK_r)
-				return (E_EVENT_TYPE::RESTART);
-			if (event.key.keysym.sym == SDLK_1)
-				return (E_EVENT_TYPE::LOAD_LIBRARY_ONE);
-			if (event.key.keysym.sym == SDLK_2)
-				return (E_EVENT_TYPE::LOAD_LIBRARY_TWO);
-			if (event.key.keysym.sym == SDLK_3)
-				return (E_EVENT_TYPE::LOAD_LIBRARY_THREE);
-			break;
+			{
+				switch (event.key.keysym.sym)
+				{
+					case (SDLK_UP):
+						return (E_EVENT_TYPE::UP);
+					case (SDLK_DOWN):
+						return (E_EVENT_TYPE::DOWN);
+					case (SDLK_LEFT):
+						return (E_EVENT_TYPE::LEFT);
+					case (SDLK_RIGHT):
+						return (E_EVENT_TYPE::RIGHT);
+					case (SDLK_ESCAPE):
+						return (E_EVENT_TYPE::QUIT);
+					case (SDLK_SPACE):
+						return (E_EVENT_TYPE::SPACE);
+					case (SDLK_r):
+						return (E_EVENT_TYPE::RESTART);
+					case (SDLK_1):
+						return (E_EVENT_TYPE::LOAD_LIBRARY_ONE);
+					case (SDLK_2):
+						return (E_EVENT_TYPE::LOAD_LIBRARY_TWO);
+					case (SDLK_3):
+						return (E_EVENT_TYPE::LOAD_LIBRARY_THREE);
+					break;
+				}
+				break;
+			}
 		default:
 			return (E_EVENT_TYPE::UNKNOWN);
 			break;

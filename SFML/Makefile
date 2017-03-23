@@ -6,7 +6,7 @@
 #    By: tlepeche <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/14 13:57:06 by tlepeche          #+#    #+#              #
-#    Updated: 2017/03/17 16:21:24 by tlepeche         ###   ########.fr        #
+#    Updated: 2017/03/23 14:33:14 by tlepeche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ sfmlrem:
 
 sfml:
 	@if [ ! -d "./SFML" ]; then \
-	curl -O "http://mirror0.sfml-dev.org/files/SFML-2.2-osx-clang-universal.tar.gz"; \
+	curl -O "http://mirror2.sfml-dev.org/files/SFML-2.2-osx-clang-universal.tar.gz"; \
 	mkdir -p SFML; \
 	tar -xzf SFML-2.2-osx-clang-universal.tar.gz -C SFML --strip-components=1;\
 	mv SFML/extlibs/freetype.framework SFML/Frameworks;\
