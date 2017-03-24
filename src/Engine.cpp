@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/24 16:54:51 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/24 18:45:43 by tiboitel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,11 +198,11 @@ void Engine::handleGame(void)
 			sound = _game->update();
 			if (!_hasLost && sound == E_EVENT_SOUND::DEATH)
 			{
-				//PLAY DEATH SOUND HERE
+				_audio_device->playSound();
 				_hasLost = true;
 			}
 			else if (sound == E_EVENT_SOUND::EAT)
-				//PLAY EAT SOUND HERE
+				_audio_device->playSound();
 			if (!_hasLost)
 				_game->changePos(1);
 			_game->draw(_renderer, _hasLost);
@@ -270,11 +270,11 @@ void Engine::handleMultiGame(void)
 			sound = _game->update();
 			if (!_hasLost && sound == E_EVENT_SOUND::DEATH)
 			{
-				//PLAY DEATH SOUND HERE
+				_audio_device->playSound();
 				_hasLost = true;
 			}
 			else if (sound == E_EVENT_SOUND::EAT)
-				//PLAY EAT SOUND HERE
+				_audio_device->playSound();
 			if (!_hasLost)
 			{
 				_game->changePos(1);
