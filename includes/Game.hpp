@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:02:09 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/23 18:36:22 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/24 16:49:53 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 #include <Food.hpp>
 #include <SpecialFood.hpp>
 #include <Exception.hpp>
+
+typedef enum class	e_event_sound
+{
+	EAT, DEATH, NONE
+}					E_EVENT_SOUND;
+
 
 class Game
 {
@@ -46,7 +52,7 @@ class Game
 		bool					hasHit(AEntity &Head, AEntity &src);
 		SpecialFood				*addSpecialFood();
 		void					eraseEntity(AEntity *entity);
-		bool					update(void);
+		E_EVENT_SOUND			update(void);
 		void					draw(IRenderer *renderer, bool hasLost);
 
 		void					addSquare(int Player);

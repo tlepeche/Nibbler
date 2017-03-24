@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:07:14 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/23 18:49:21 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/24 16:51:38 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,10 +259,11 @@ void	Game::addSquare(int Player)
 	}
 }
 
-bool	Game::update(void)
+E_EVENT_SOUND	Game::update(void)
 {
-	std::pair<int, int> newPos2(-1 , -1);
-	Snake *P2Head = NULL; 
+	E_EVENT_SOUND		sound = E_EVENT_SOUND::NONE;
+	std::pair<int, int>	newPos2(-1 , -1);
+	Snake				*P2Head = NULL; 
 
 	if (_P1hasEaten)
 		addSquare(1);
@@ -274,7 +275,7 @@ bool	Game::update(void)
 		std::pair<int, int> newPos1(P1Head->getPos().first + P1Head->getVectorX(),
 			P1Head->getPos().second + P1Head->getVectorY());
 	if (newPos1.first < 0 || newPos1.first >= _width || newPos1.second < 0 || newPos1.second >= _height)
-		return false;
+		return E_EVENT_SOUND::DEATH;
 
 	_P1TailPos = (*(_snakeOne.end() - 1))->getPos();
 
@@ -285,7 +286,7 @@ bool	Game::update(void)
 		newPos2.first = P2Head->getPos().first + P2Head->getVectorX();
 		newPos2.second = P2Head->getPos().second + P2Head->getVectorY();
 		if (newPos2.first < 0 || newPos2.first >= _width || newPos2.second < 0 || newPos2.second >= _height)
-			return false;
+			return E_EVENT_SOUND::DEATH;
 
 		_P2TailPos = (*(_snakeTwo.end() - 1))->getPos();
 	}
@@ -299,7 +300,8 @@ bool	Game::update(void)
 		else if (newPos2 == (*it)->getPos())
 			_P2hasEaten = true;
 		if (newPos1 == (*it)->getPos() || newPos2 == (*it)->getPos())
-		{	
+		{
+			sound = E_EVENT_SOUND::EAT;
 			Food	*Fruit = dynamic_cast<Food *>(*it);
 			_score += Fruit->getScore();
 			if (Fruit->getType() == E_ENTITIES_TYPE::FOOD)
@@ -314,7 +316,7 @@ bool	Game::update(void)
 	{
 		if (((*it)->getPos() == newPos1 && P1Head != *it) ||
 			   	(P2Head && (*it)->getPos() == newPos2 && *it != P2Head))
-			return false;
+			return E_EVENT_SOUND::DEATH;
 	}
 	if (!_snakeTwo.empty())
 	{
@@ -322,10 +324,10 @@ bool	Game::update(void)
 		{
 			if (((*it)->getPos() == newPos1 && P1Head != *it) ||
 					(P2Head && (*it)->getPos() == newPos2 && *it != P2Head))
-				return false;
+				return E_EVENT_SOUND::DEATH;
 		}
 	}
-	return true;
+	return sound;
 }
 
 

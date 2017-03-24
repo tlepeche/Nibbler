@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:09:17 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/23 18:30:22 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/24 16:54:51 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ void	Engine::handleLibChange(E_EVENT_TYPE const &event)
 void Engine::handleGame(void)
 {
 	E_EVENT_TYPE		event;
+	E_EVENT_SOUND		sound;
 	double				frameRate;
 	std::clock_t		deltaTime;
 	std::clock_t		endFrame;
@@ -194,8 +195,14 @@ void Engine::handleGame(void)
 		if (_isPaused == false && event != E_EVENT_TYPE::RESIZE)
 		{
 			_game->handleP1Inputs(event);
-			if (!_hasLost && !(_game->update()))
+			sound = _game->update();
+			if (!_hasLost && sound == E_EVENT_SOUND::DEATH)
+			{
+				//PLAY DEATH SOUND HERE
 				_hasLost = true;
+			}
+			else if (sound == E_EVENT_SOUND::EAT)
+				//PLAY EAT SOUND HERE
 			if (!_hasLost)
 				_game->changePos(1);
 			_game->draw(_renderer, _hasLost);
@@ -223,6 +230,7 @@ void Engine::handleGame(void)
 void Engine::handleMultiGame(void)
 {
 	E_EVENT_TYPE		event;
+	E_EVENT_SOUND		sound;
 	double				frameRate;
 	std::clock_t		deltaTime;
 	std::clock_t		endFrame;
@@ -259,8 +267,14 @@ void Engine::handleMultiGame(void)
 			event = _renderer->getLastEvent();
 			_game->handleP1Inputs(event);
 			_game->handleP2Inputs(event);
-			if (!_hasLost && !(_game->update()))
+			sound = _game->update();
+			if (!_hasLost && sound == E_EVENT_SOUND::DEATH)
+			{
+				//PLAY DEATH SOUND HERE
 				_hasLost = true;
+			}
+			else if (sound == E_EVENT_SOUND::EAT)
+				//PLAY EAT SOUND HERE
 			if (!_hasLost)
 			{
 				_game->changePos(1);
