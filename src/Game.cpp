@@ -6,7 +6,7 @@
 /*   By: tiboitel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 20:07:14 by tiboitel          #+#    #+#             */
-/*   Updated: 2017/03/24 16:51:38 by tlepeche         ###   ########.fr       */
+/*   Updated: 2017/03/30 15:08:00 by tlepeche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,15 +335,6 @@ E_EVENT_SOUND	Game::update(void)
 void	Game::draw(IRenderer *renderer, bool hasLost)
 {
 	renderer->clearScreen();
-	for (std::vector <AEntity *>::iterator it = _entities.begin(); it != _entities.end(); it++)
-	{
-		renderer->drawScore(_score);
-		if ((*it)->getType() == E_ENTITIES_TYPE::FOOD)
-			renderer->drawFood(dynamic_cast<Food *>(*it));
-		if ((*it)->getType() == E_ENTITIES_TYPE::SPECIALFOOD)
-			renderer->drawSpecFood(dynamic_cast<SpecialFood *>(*it));
-	}
-
 	//P1
 	renderer->drawP1SnakeHead(dynamic_cast<Snake *>(*(_snakeOne.begin())));
 	for (std::vector <AEntity *>::iterator it = _snakeOne.begin() + 1; it != _snakeOne.end(); it++)
@@ -355,10 +346,16 @@ void	Game::draw(IRenderer *renderer, bool hasLost)
 		for (std::vector <AEntity *>::iterator it = _snakeTwo.begin() + 1; it != _snakeTwo.end(); it++)
 			renderer->drawP2Snake(dynamic_cast<Snake *>(*it));
 	}
-
+	for (std::vector <AEntity *>::iterator it = _entities.begin(); it != _entities.end(); it++)
+	{
+		renderer->drawScore(_score);
+		if ((*it)->getType() == E_ENTITIES_TYPE::FOOD)
+			renderer->drawFood(dynamic_cast<Food *>(*it));
+		if ((*it)->getType() == E_ENTITIES_TYPE::SPECIALFOOD)
+			renderer->drawSpecFood(dynamic_cast<SpecialFood *>(*it));
+	}
 	if (hasLost)
 		renderer->drawGO();
-
 	renderer->render();
 }
 
